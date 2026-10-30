@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>CD 收藏管理系統</title>
+<style>
+:root{--bg:#e9e4dc;--p:#f3efe8;--p2:#f9f6f1;--t:#4a4540;--m:#7a736a;--f:#9a9288;--a:#a58d76;--a2:#8a6f5a;--a3:#8c7560;--r:#b86a62;--b:#d8d0c4;--ib:#9c948a;--gd:#9a8570;--bg2:#f4f0ea;--bg3:#ddd6cb;--qc1:#8A9BA8;--qs1:#8A9BA8;--qk1:#1c1916;--qd1:#4a3f36;--qc2:#A8B5A2;--qs2:#A8B5A2;--qk2:#1c1916;--qd2:#4a3f36;--qc3:#C8AFA6;--qs3:#C8AFA6;--qk3:#1c1916;--qd3:#4a3f36;--qc4:#C4B7A6;--qs4:#C4B7A6;--qk4:#1c1916;--qd4:#4a3f36;--qc5:#C2B07A;--qs5:#C2B07A;--qk5:#1c1916;--qd5:#4a3f36;--qc6:#B46A5A;--qs6:#B46A5A;--qk6:#1c1916;--qd6:#4a3f36;--qc7:#9D8CA6;--qs7:#9D8CA6;--qk7:#1c1916;--qd7:#4a3f36;--qc8:#BFBFB3;--qs8:#BFBFB3;--qk8:#1c1916;--qd8:#4a3f36;--xicon:none;--fx:inset 0 1px 0 var(--hi),0 2px 10px var(--sh);--gap:clamp(4px,1.6vw,10px);--bd:min(46px,calc((100vw - 24px - 7*var(--gap))/8));--sh:rgba(80,70,60,.18);--hi:rgba(255,255,255,.7);--dv:rgba(80,70,60,.12);--dgc:#a8574f;--on:#fff;--hotbg:#7a6c3b;--hotfg:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}button,label,.cd,.rr{touch-action:manipulation}[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background-color:var(--bg);color:var(--t);font:15px/1.5 "PingFang TC","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+input[type=checkbox]{accent-color:var(--a)}::-webkit-scrollbar{width:6px;height:6px}dialog,.box,.tkw,#res,#sp,#sl{scrollbar-width:none;-ms-overflow-style:none}dialog::-webkit-scrollbar,.box::-webkit-scrollbar,.tkw::-webkit-scrollbar,#res::-webkit-scrollbar,#sp::-webkit-scrollbar,#sl::-webkit-scrollbar{display:none;width:0;height:0}::-webkit-scrollbar-thumb{background:var(--b);border-radius:10px}
+button,input,select,textarea{font:inherit;color:inherit}
+input:not([type=checkbox]),select,textarea{background:var(--p2);border:1px solid var(--b);border-radius:8px;padding:8px;width:100%}
+input:not([type=checkbox]):focus,select:focus,textarea:focus{outline:none;border-color:var(--t);box-shadow:none}
+#logo{padding:8px 12px 0;display:flex;align-items:flex-end;gap:12px}#logo b{font:600 28px/1 Georgia,'Times New Roman',serif;letter-spacing:.06em;color:var(--a2);margin-bottom:3px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);backdrop-filter:blur(8px);padding:12px}
+#ic{display:flex;gap:var(--gap);flex-wrap:nowrap;justify-content:center;margin-bottom:10px}
+#ic .rb{flex:0 0 var(--bd);min-width:0;width:var(--bd);height:var(--bd)}#ic .rb svg{width:52%;height:52%}
+#ic .rb:nth-child(1){--bs:var(--qs1);--bk:var(--qk1);--bc:var(--qc1)}#ic .rb:nth-child(2){--bs:var(--qs2);--bk:var(--qk2);--bc:var(--qc2)}#ic .rb:nth-child(3){--bs:var(--qs3);--bk:var(--qk3);--bc:var(--qc3)}#ic .rb:nth-child(4){--bs:var(--qs4);--bk:var(--qk4);--bc:var(--qc4)}#ic .rb:nth-child(5){--bs:var(--qs5);--bk:var(--qk5);--bc:var(--qc5)}#ic .rb:nth-child(6){--bs:var(--qs6);--bk:var(--qk6);--bc:var(--qc6)}#ic .rb:nth-child(7){--bs:var(--qs7);--bk:var(--qk7);--bc:var(--qc7)}#ic .rb:nth-child(8){--bs:var(--qs8);--bk:var(--qk8);--bc:var(--qc8)}
+.rb{width:46px;height:46px;border-radius:50%;border:1px solid var(--bc,var(--b));background:var(--bs,var(--p2));color:var(--bk,var(--a2));box-shadow:var(--fx);display:grid;place-items:center;cursor:pointer;padding:0;transition:.15s}
+.rb:hover,.rb:active{background:var(--gd);color:var(--on);border-color:var(--a);box-shadow:0 0 0 2px var(--sh),0 3px 10px var(--sh);transform:scale(1.08)}
+.rb svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#q{max-width:640px;display:block;margin:0 auto;border-radius:99px!important;padding:10px 18px!important;height:var(--bd);background:var(--p);border:.5px solid var(--ib);box-shadow:inset 0 1px 0 var(--hi),0 2px 10px var(--sh)}#q:focus{border-color:var(--t);border-width:1px;box-shadow:none}
+#q::placeholder{color:var(--ib);opacity:1}#q.warn::placeholder{color:var(--t)}
+#q::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:26px;height:26px;margin-left:8px;margin-right:-10px;border-radius:50%;border:1px solid var(--qc1);background:var(--qs1) var(--xicon) center/14px no-repeat;box-shadow:var(--fx);cursor:pointer}
+#chips{text-align:center}
+#cnt{padding:0 14px 0;margin-bottom:-5px;text-align:right;font-size:12px;color:var(--m)}
+.chip{display:inline-block;padding:3px 12px;border-radius:99px;background:var(--p2);border:1px solid var(--b);color:var(--m);margin:3px;font-size:13px;cursor:pointer}
+.cd,.chip,.bt{box-shadow:var(--fx)}
+.chip.on,.bt:hover,.pr{background:var(--gd);color:var(--on);border-color:var(--a)}
+#list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;padding:12px}
+.cd{position:relative;display:flex;align-items:flex-start;gap:12px;padding:10px;background:var(--p2);border:1px solid var(--b);border-radius:12px;cursor:pointer;min-height:98px}
+.cd[data-c="1"]{background:var(--qs1);--ck:var(--qk1);--cs:var(--qs1);--x1:var(--ct1a);--x2:var(--ct1b);--x3:var(--ct1c)}.cd[data-c="2"]{background:var(--qs2);--ck:var(--qk2);--cs:var(--qs2);--x1:var(--ct2a);--x2:var(--ct2b);--x3:var(--ct2c)}.cd[data-c="3"]{background:var(--qs3);--ck:var(--qk3);--cs:var(--qs3);--x1:var(--ct3a);--x2:var(--ct3b);--x3:var(--ct3c)}.cd[data-c="4"]{background:var(--qs4);--ck:var(--qk4);--cs:var(--qs4);--x1:var(--ct4a);--x2:var(--ct4b);--x3:var(--ct4c)}.cd[data-c="5"]{background:var(--qs5);--ck:var(--qk5);--cs:var(--qs5);--x1:var(--ct5a);--x2:var(--ct5b);--x3:var(--ct5c)}.cd[data-c="6"]{background:var(--qs6);--ck:var(--qk6);--cs:var(--qs6);--x1:var(--ct6a);--x2:var(--ct6b);--x3:var(--ct6c)}.cd[data-c="7"]{background:var(--qs7);--ck:var(--qk7);--cs:var(--qs7);--x1:var(--ct7a);--x2:var(--ct7b);--x3:var(--ct7c)}.cd[data-c="8"]{background:var(--qs8);--ck:var(--qk8);--cs:var(--qs8);--x1:var(--ct8a);--x2:var(--ct8b);--x3:var(--ct8c)}
+.tm{position:absolute;right:10px;bottom:8px;font-size:12.5px;color:var(--x3,var(--m));font-variant-numeric:tabular-nums}.in small:last-child{padding-right:54px}
+.im{flex:none;width:78px;height:78px;position:relative;border-radius:8px;overflow:hidden}.im img{width:100%;height:100%;object-fit:cover;display:block}
+.in{display:grid;gap:1px;min-width:0;flex:1}.in b,.in span,.in small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.in span{color:var(--x2,var(--t))}.in small{color:var(--x3,var(--m));font-size:12.5px}.in b{color:var(--x1,var(--t));font-size:17px;font-weight:400}
+.hot{left:4px!important;top:4px!important;font-size:11px!important;padding:0 6px!important}
+.hot{position:absolute;left:6px;top:6px;background:var(--hotbg);color:var(--hotfg);font-size:12px;padding:1px 8px;border-radius:99px}
+.dl{position:absolute;right:6px;top:6px;width:30px;height:30px;border-radius:50%;border:0;background:#000a;color:#fff;display:grid;place-items:center;cursor:pointer}
+.dl svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+dialog{border:1px solid var(--b);background:var(--p);color:var(--t);border-radius:16px;padding:0;width:min(580px,94vw);max-height:90vh}
+dialog,dialog:focus,dialog:focus-visible,.box:focus,.box:focus-visible,.rb:focus-visible,.bt:focus-visible,.chip:focus-visible{outline:none}
+dialog{max-width:none}
+dialog::backdrop{background:rgba(60,52,44,.45)}.box{padding:18px;position:relative;overflow:auto;max-height:88vh}
+.x{position:absolute;right:10px;top:10px;width:26px;height:26px}.x svg{width:14px;height:14px;stroke-width:2}.x.fl{position:fixed;top:max(10px,env(safe-area-inset-top));right:10px;margin:0;z-index:5;background:transparent;box-shadow:none}.rb.x.fl{border:.5px solid var(--t)!important;color:var(--t)}.rb.x.fl:hover,.rb.x.fl:active{background:transparent;box-shadow:none;transform:none}h3{margin:0 40px 10px 0}h4{margin:12px 0 4px;color:var(--i7,var(--a2))}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:8px 0}
+label{display:grid;gap:4px;font-size:13px;color:var(--m)}label.ck{display:flex;align-items:center;gap:6px;color:var(--t);font-size:15px;cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}.row input{flex:1}.col{display:grid;gap:8px}.cw{display:flex;flex-wrap:wrap}
+.bt{padding:9px 14px;border-radius:99px;border:1px solid var(--b);background:var(--p2);cursor:pointer;text-decoration:none;text-align:center;color:var(--t)}
+.pr:hover{filter:brightness(1.1)}.dg{border-color:rgba(184,106,98,.45);color:var(--dgc);background:rgba(184,106,98,.1)}.dg:hover{background:var(--r);color:#fff;border-color:var(--r)}
+.col>.bt:nth-child(8n+1){background:var(--qs1);border-color:var(--qc1)}.col>.bt:nth-child(8n+2){background:var(--qs2);border-color:var(--qc2)}.col>.bt:nth-child(8n+3){background:var(--qs3);border-color:var(--qc3)}.col>.bt:nth-child(8n+4){background:var(--qs4);border-color:var(--qc4)}.col>.bt:nth-child(8n+5){background:var(--qs5);border-color:var(--qc5)}.col>.bt:nth-child(8n+6){background:var(--qs6);border-color:var(--qc6)}.col>.bt:nth-child(8n+7){background:var(--qs7);border-color:var(--qc7)}.col>.bt:nth-child(8n+8){background:var(--qs8);border-color:var(--qc8)}
+.col>.bt:hover{background:var(--gd);color:var(--on);border-color:var(--a)}.col>.bt.dg{background:rgba(184,106,98,.1);border-color:rgba(184,106,98,.45)}.col>.bt.dg:hover{background:var(--r);color:#fff;border-color:var(--r)}
+.sw{width:44px;height:24px;border-radius:99px;background:var(--b);position:relative;flex:none;transition:.2s}.sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--p);transition:.2s}.sw.on{background:var(--gd)}.sw.on::after{left:23px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}.sg b{display:block;font-size:24px;color:var(--a)}.sg>div:nth-child(1) b{color:var(--qd1)}.sg>div:nth-child(2) b{color:var(--qd2)}.sg>div:nth-child(3) b{color:var(--qd3)}.sg>div:nth-child(4) b{color:var(--qd4)}
+.br{display:grid;grid-template-columns:90px 1fr 36px;align-items:center;gap:8px;margin:4px 0}.br i{height:8px;background:var(--gd);border-radius:4px;display:block}.br em{font-style:normal;text-align:right}
+.iv{text-align:center}.iv img{width:min(240px,70%);aspect-ratio:1;object-fit:cover;border-radius:10px;box-shadow:0 6px 20px var(--sh)}.iv h3{margin:12px 0 2px}.ar{font-size:15px}.rl{color:var(--m)}
+.tkw{max-height:22vh;overflow:auto;border:1px solid var(--b);border-radius:10px;padding:2px 10px}.tkw.open{max-height:none;overflow:visible;border:0;padding:2px 0}
+.hh{display:flex;justify-content:space-between;align-items:center}.sm{width:28px;height:28px;border:0;border-radius:0;background:none;box-shadow:none}.sm:hover,.sm:active{background:none;box-shadow:none;transform:none;color:var(--a2)}.sm svg{width:18px;height:18px;stroke-width:2}
+.tr{display:grid;grid-template-columns:var(--pw,40px) minmax(0,1fr) auto;gap:8px;padding:6px 0;border-bottom:1px solid var(--dv)}.tr:last-child{border:0}.tp,.td{white-space:nowrap;color:var(--m);font-variant-numeric:tabular-nums}.td{text-align:right}.tt{min-width:0;word-break:break-word}.crg{display:grid;grid-template-columns:var(--rw,max-content) minmax(0,1fr);column-gap:15px;margin-top:2px}.cr1{overflow-wrap:anywhere;text-align:right;color:var(--m);font-size:13px;line-height:1.55}.cr2{text-align:left;color:var(--a2);font-size:13px;line-height:1.55;min-width:0;word-break:break-word}
+.ta{font-style:normal;font-weight:600}
+.tt small{display:block;color:var(--m)}
+.th{padding:8px 0 2px;color:var(--i6,var(--t));font-weight:600}.th .crg{margin-left:calc(var(--pw,40px) + 8px);font-weight:400;margin-top:2px}
+.kr{grid-column:1/-1;display:flex;flex-wrap:wrap;column-gap:12px}.kr>span{flex:none;width:110px;color:var(--m)}.kr>div{flex:1 1 auto;min-width:0;word-break:break-word}.kr>div.w2{padding-left:2em}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:4px 12px}.kv span{color:var(--m)}.kv div{word-break:break-word}
+.bt svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ir .bt svg{width:27px;height:27px}.ir{flex-wrap:nowrap}.ir .bt{flex:1 1 0;min-width:0;height:auto;padding:3px 6px;font-size:13px;line-height:1.5;border:1px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:center}
+#vd{width:100%;border-radius:10px;margin-top:8px}
+#sc{position:fixed;inset:0;z-index:40;background:#000;display:flex;flex-direction:column}#sv{flex:1;min-height:0;width:100%;object-fit:cover}
+#sb{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:12px;padding:10px;background:rgba(0,0,0,.55);color:#fff;z-index:2;font-size:16px}
+#sl{max-height:34vh;min-height:90px;overflow:auto;background:var(--bg);padding:8px 12px;font-size:14px}#sl div{padding:3px 0;border-bottom:1px solid var(--b)}
+#sp{position:absolute;inset:auto 0 0 0;max-height:75vh;overflow:auto;background:var(--bg);padding:12px;z-index:3;border-radius:16px 16px 0 0}
+#sbar{position:fixed;left:0;right:0;bottom:0;z-index:15;display:flex;gap:8px;align-items:center;padding:10px 12px;background:var(--p);border-top:1px solid var(--b)}#sn{flex:1;text-align:center}
+.sk{position:absolute;right:8px;top:8px;width:24px;height:24px;border-radius:7px;border:2px solid #fff;background:rgba(60,52,44,.45);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700;z-index:1}
+.cd.sel{box-shadow:0 0 0 2px var(--ck,var(--a)),var(--fx)}.cd.sel .sk{background:var(--a);border-color:var(--a)}
+#res{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding-bottom:100px}
+.rh{position:sticky;top:0;display:flex;gap:14px;align-items:center;padding:10px;background:var(--bg);border-bottom:1px solid var(--b)}
+.rr{display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid var(--b);cursor:pointer;color:var(--t);font-size:14px}
+.rr img{width:64px;height:64px;object-fit:cover;border-radius:6px;flex:none}.rr input,.ck input{width:20px;height:20px;flex:none}.rr small{color:var(--m)}
+#fab{position:fixed;right:18px;bottom:22px;width:62px;height:62px;z-index:30;background:var(--gd);color:var(--on);font-size:30px;border:0;box-shadow:0 4px 18px var(--sh)}
+#fab b{position:absolute;top:-4px;right:-4px;background:var(--r);color:#fff;font-size:13px;min-width:22px;height:22px;border-radius:11px;line-height:22px;text-align:center}
+#toast{position:fixed;inset:auto auto 90px 50%;margin:0;transform:translateX(-50%);background:var(--t);color:var(--p);border:0;padding:10px 18px;border-radius:99px;max-width:90vw;pointer-events:none}
+/* 無框線 */
+.cd,.rb,.bt,.chip,#q,input:not([type=checkbox]),select,textarea{border-color:transparent!important}
+#q::-webkit-search-cancel-button{border:0}
+#q:focus,input:not([type=checkbox]):focus,select:focus,textarea:focus{border-color:var(--t)!important}
+.row3{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:9px 48px}.row3 span:first-child{white-space:pre}.row3 .sw{position:absolute;right:12px;top:50%;margin-top:-12px}
+.swg{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin:6px 0}.swg button{background:none;border:0;padding:0;display:block;cursor:pointer;box-shadow:none}.swg i{display:block;width:100%;aspect-ratio:1;border-radius:50%;box-shadow:var(--fx)}
+/* 變更配色工具 */
+#ct{--cbg:#faf8f5;--cfg:#3a3733;--cbd:#d8d2c8;--csf:#fff;position:fixed;inset:0;z-index:60;background:var(--cbg);color:var(--cfg);overflow:auto;padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom))}
+#ct[hidden]{display:none}.ct-h{display:flex;justify-content:space-between;align-items:center;margin:4px 0 8px}.ct-h b{font-size:18px}
+#ct_xx{background:none;border:0;font-size:22px;color:var(--cfg);padding:4px 10px;cursor:pointer}
+#ct_grid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}#ct_grid div{aspect-ratio:1;cursor:pointer;border-radius:2px;transition:transform .12s}#ct_grid div.big{transform:scale(var(--s));position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.ct-row{display:flex;gap:8px;margin:10px 0}
+#ct input{flex:1;min-width:0;padding:10px;font-size:16px;border-radius:8px;background:var(--csf);color:var(--cfg)}#ct input.on{border-color:var(--cfg)!important;box-shadow:0 0 0 2px var(--cbd)}
+#ct .ct-row button,#ct_pf button,#ct_tg{padding:10px 0;font-size:16px;border:1px solid var(--cbd);border-radius:8px;background:var(--csf);color:var(--cfg);flex:1;cursor:pointer}
+#ct button:active{opacity:.6}#ct .ct-row button.on{background:var(--cfg);color:var(--cbg)}
+#ct_cards{display:flex;flex-direction:column;gap:4px;margin-top:6px}#ct .card{height:2cm;width:100%;border-radius:6px;display:flex;align-items:flex-end;padding:6px 10px;font-size:14px;cursor:pointer}
+#ct_mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:62;padding:12px}
+#ct_pop{background:var(--csf);border-radius:14px;width:100%;max-width:420px;max-height:92%;display:flex;flex-direction:column;overflow:hidden}
+#ct_pt{padding:12px 14px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}#ct_ptt{flex:1}#ct_tg{flex:none!important;padding:4px 10px!important;font-size:13px!important}
+#ct_pl{overflow:auto;padding:0 12px;flex:1}#ct_pl .card{height:auto;min-height:40px;align-items:flex-end;justify-content:flex-start;margin-bottom:4px;cursor:pointer;transition:all .15s}
+#ct_pl.g9{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-bottom:4px;align-items:start}
+#ct_pl.g9 .card{aspect-ratio:1;min-height:0;flex-direction:column;align-items:flex-start;justify-content:flex-end;margin:0;padding:6px;font-size:12px;gap:2px;word-break:break-all}
+#ct_mask2{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:63}#ct_one{cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.35)}#ct_pf{display:flex;gap:8px;padding:12px}
+@media (prefers-color-scheme:dark){#ct{--cbg:#1f1d1b;--cfg:#eee9e2;--cbd:#4a4640;--csf:#2b2927}}
+#ct input{border:1px solid var(--cbd)!important}#ct input.on{border-color:var(--cfg)!important}
+#ct_grid div.pk{position:relative;z-index:3}
+#ct_grid div.pk::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:min(5vw,20px);font-weight:700;color:inherit}
+</style></head><body>
+<div id="logo"><b>CD Collection</b><span class="chip" id="srcc" style="margin-left:auto;cursor:default"></span></div>
+<header><div id="ic"></div><input id="q" type="search" aria-label="搜尋／新增" placeholder="搜尋或輸入藝人/專輯/CD編號/條碼" autocomplete="off"><div id="chips"></div></header>
+<div id="cnt"></div>
+<main id="list"></main>
+<div id="res" hidden><div class="rh"><button class="rb" id="rx" aria-label="返回"></button><label class="ck"><input type="checkbox" id="ra">全選</label></div><div id="rl"></div></div>
+<div id="sbar" hidden><button class="bt" id="sa">全選</button><span id="sn"></span><button class="bt dg" id="sd">刪除</button><button class="bt" id="sq">完成</button></div>
+<div id="sc" hidden><video id="sv" playsinline muted></video><div id="sb"><button class="rb" id="sx" aria-label="結束批次掃描"></button><span id="ss"></span></div><div id="sp" hidden></div><div id="sl"></div></div>
+<button id="fab" class="rb" hidden aria-label="加入收藏">＋<b id="fn"></b></button>
+<div id="ct" hidden><div class="ct-h"><b>變更配色</b><button id="ct_xx" aria-label="關閉">✕</button></div>
+<div id="ct_grid"></div>
+<div class="ct-row"><input id="ct_i1" placeholder="第一輸入框 #RRGGBB" class="on"><input id="ct_i2" placeholder="第二輸入框 #RRGGBB"></div>
+<div class="ct-row"><button id="ct_m0" class="on">跨色系</button><button id="ct_m1">同色系</button><button id="ct_m2">近色相</button></div>
+<div class="ct-row"><button id="ct_b9">九色</button><button id="ct_bg">灰階</button><button id="ct_bj">漸層</button></div>
+<div id="ct_cards"></div>
+<div id="ct_mask"><div id="ct_pop"><div id="ct_pt"><span id="ct_ptt"></span><button id="ct_tg">卡片式</button><span id="ct_x" style="cursor:pointer">✕</span></div><div id="ct_pl" class="g9"></div><div id="ct_pf"><button id="ct_cp">變更</button><button id="ct_cl">關閉</button></div></div></div>
+<div id="ct_mask2"><div id="ct_one" class="card"></div></div></div>
+<dialog id="dlg"></dialog><dialog id="cf"></dialog><div id="toast" popover="manual"></div>
+<input type="file" id="imp" accept=".json,application/json" hidden><input type="file" id="pho" accept="image/*" capture="environment" hidden>
+<script>
+/* ★ Discogs Personal Access Token（日後更換請改這裡；僅供個人本機使用） */
+const TOKEN='DNUjeJmKXvKdGHbbGShngxaYcPZbfIQBMbGVxJlY';
+const API='https://api.discogs.com',MB='https://musicbrainz.org/ws/2',MBINC='?inc=recordings+labels+artist-credits+media',LSK='cdc_items',LSC='cdc_cfg';
+const GEN=['古典','爵士','藍調','流行','其他'],REG=['國語','台語','西洋','東洋','無／器樂','其他／未分類'];
+const CT=['','交響曲','小提琴協奏曲','鋼琴協奏曲','奏鳴曲','安魂曲','圓舞曲','歌劇','組曲','其他'];
+const STY=['','搖擺樂','咆哮樂','酷派爵士','調式爵士','融合爵士','人聲爵士','三角洲藍調','芝加哥藍調','德州藍調','電聲藍調','其他'];
+const BL={title:'',artist:'',artistEn:'',aka:'',others:'',year:'',date:'',label:'',series:'',format:'',country:'',barcode:'',catno:'',discogsId:'',mbid:'',appleId:'',url:'',cover:'',tracks:[],note:'',genre:'其他',region:'',hot:false,rating:0,buyDate:'',price:'',currency:'',source:'',tags:[],composer:'',ctype:'',conductor:'',ensemble:'',sty:'',instr:'',ptype:'',gtype:'',members:'',dgenre:'',dnotes:''};
+const COLS=[['專輯名稱','title'],['藝人','artist'],['中文藝名','aka'],['英文藝名','artistEn'],['參與者','others'],['發行年份','year'],['發行日期','date'],['唱片公司','label'],['系列／版本','series'],['目錄編號','catno'],['格式','format'],['國家','country'],['條碼','barcode'],['Discogs ID','discogsId'],['MusicBrainz ID','mbid'],['Apple Music ID','appleId'],['Discogs 網址','url'],['封面網址','cover'],['曲目','tracks'],['加入日期','added'],['版本說明','dnotes'],['備註','note'],['音樂類型','genre'],['來源類型','dgenre'],['語系','region'],['流行類別','ptype'],['團體類型','gtype'],['團體成員','members'],['發燒片','hot'],['評分','rating'],['購買日期','buyDate'],['價格','price'],['幣別','currency'],['來源','source'],['標籤','tags'],['作曲家','composer'],['音樂體裁','ctype'],['指揮','conductor'],['演出團體','ensemble'],['風格流派','sty'],['核心樂器／編制','instr']];
+const IC={search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',add:'<path d="M12 5v14M5 12h14"/>',stats:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',filter:'<path d="M3 5h18l-7 8v6l-4-2v-4z"/>',quick:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',sort:'<path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"/>',exp:'<path d="M12 3v12M7 8l5-5 5 5M4 17v4h16v-4"/>',sys:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',mic:'<g transform="rotate(35 12 12)"><circle cx="12" cy="6" r="4.4"/><path d="M8.1 7.2c2.5 1.2 5.3 1.2 7.8 0"/><path d="M8.6 10.9h6.8"/><path d="M9.4 11.2l1.1 9a.9.9 0 0 0 .9.8h1.2a.9.9 0 0 0 .9-.8l1.1-9"/><path d="M10.1 15.2h3.8"/></g>',cd:'<circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="2.6"/>',bar:'<path d="M4.5 5v14" stroke-width="2.8" stroke-linecap="butt"/><path d="M8 5v14" stroke-width="1.2" stroke-linecap="butt"/><path d="M11 5v14" stroke-width="2.8" stroke-linecap="butt"/><path d="M14.4 5v14" stroke-width="1.2" stroke-linecap="butt"/><path d="M17 5v14" stroke-width="2.8" stroke-linecap="butt"/><path d="M20 5v14" stroke-width="1.2" stroke-linecap="butt"/>',cam:'<path d="M4 8h3l1.6-2.5h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.6"/>',scan:'<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/>',hand:'<path d="M7 12V6.5a1.4 1.4 0 0 1 2.8 0V11"/><path d="M9.8 10.5V4.5a1.4 1.4 0 0 1 2.8 0v6"/><path d="M12.6 10.5V5.5a1.4 1.4 0 0 1 2.8 0V11"/><path d="M15.4 11V8a1.4 1.4 0 0 1 2.8 0v6.5c0 3.5-2.5 6-6 6-2.6 0-4.3-1.3-5.5-3.4L4.4 13.5a1.4 1.4 0 0 1 2.3-1.4L7 12.7"/>',chevd:'<path d="M6 9l6 6 6-6"/>',chevu:'<path d="M6 15l6-6 6 6"/>',back:'<path d="M15 5l-7 7 7 7"/>',close:'<path d="M6 6l12 12M18 6L6 18"/>'};
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const svg=k=>`<svg viewBox="0 0 24 24">${IC[k]}</svg>`,uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7),today=()=>new Date().toISOString().slice(0,10);
+let PH='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#e4ddd2"/><circle cx="50" cy="50" r="30" fill="none" stroke="#a39c92" stroke-width="3"/><circle cx="50" cy="50" r="6" fill="#a39c92"/></svg>');
+const DF=()=>({g:[],r:[],hot:'',label:'',fmt:'',y1:'',y2:''});
+let items=[],cfg={sort:'added',dir:'desc',q:[],f:DF(),src:'discogs',rand:1},R=null,tt,CH=[],st,tm,lastD=0,SEL=null;
+function toast(m,ms=2600){const t=$('#toast');t.textContent=m;try{t.hidePopover()}catch(_){}try{t.showPopover()}catch(_){}clearTimeout(tt);tt=setTimeout(()=>{try{t.hidePopover()}catch(_){}},ms)}
+try{const r=localStorage.getItem(LSK);if(r){const a=JSON.parse(r);if(!Array.isArray(a))throw 0;items=a}}catch(e){try{localStorage.setItem('cdc_items_corrupt',localStorage.getItem(LSK))}catch(_){}setTimeout(()=>toast('收藏資料讀取失敗，已保留原始內容',4000),300)}
+try{Object.assign(cfg,JSON.parse(localStorage.getItem(LSC)||'{}'));cfg.f={...DF(),...cfg.f}}catch(e){}
+const save=()=>{try{localStorage.setItem(LSK,JSON.stringify(items));return 1}catch(e){toast('儲存失敗（容量不足或瀏覽器限制）',4000);return 0}};
+const saveCfg=()=>{try{localStorage.setItem(LSC,JSON.stringify(cfg))}catch(e){}};
+const tn=t=>typeof t=='string'?{t}:t,DUR=/^\d+:\d{2}(:\d{2})?$/;
+const dsec=d=>DUR.test(String(d||''))?String(d).split(':').reduce((a,b)=>a*60+ +b,0):null;
+const fdur=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')};
+const trLine=t=>{t=tn(t);if(t.h!=null)return'# '+t.h+(t.c||[]).map(c=>'\n  - '+c).join('');const b=t.a?[t.p||'',t.t,t.d||'',t.a].join(' | '):(t.p||t.d)?[t.p||'',t.t,t.d||''].join(' | '):t.t;return b+(t.c||[]).map(c=>'\n  - '+c).join('')};
+const trParse=x=>{const o=[];x.split(/\r?\n/).forEach(l=>{if(!l.trim())return;const last=o[o.length-1];
+ if(/^\s+-\s/.test(l)){if(last)(last.c=last.c||[]).push(l.replace(/^\s+-\s/,'').trim());return}
+ if(/^\s*#\s/.test(l)){o.push({h:l.replace(/^\s*#\s/,'').trim()});return}
+ const q=l.split(/\s\|\s/).map(v=>v.trim());o.push(q.length>=3?{p:q[0],t:q[1],d:q[2],a:q[3]||''}:q.length==2?(DUR.test(q[1])?{p:'',t:q[0],d:q[1],a:''}:{p:q[0],t:q[1],d:'',a:''}):{p:'',t:q[0],d:'',a:''})});return o};
+const dkey=i=>i.discogsId?'d'+i.discogsId:i.mbid?'m'+i.mbid:i.appleId?'a'+i.appleId:[i.artist,i.title,i.year,i.format].join('|').toLowerCase();
+const hay=i=>[i.title,i.artist,i.artistEn,i.aka,i.others,i.label,i.series,i.format,i.country,i.barcode,i.discogsId,i.note,(i.tags||[]).join(' '),(i.tracks||[]).map(t=>{t=tn(t);return(t.h||t.t||'')+' '+(t.a||'')+' '+(t.c||[]).join(' ')}).join(' '),i.aka,i.catno,i.ptype,i.gtype,i.members,i.dgenre,i.dnotes,i.composer,i.conductor,i.ensemble,i.sty,i.instr,i.ctype].join('\n').toLowerCase();
+const hasF=()=>{const f=cfg.f;return f.g.length||f.r.length||f.hot||f.label||f.fmt||f.y1||f.y2};
+/* ---------- 對話框 ---------- */
+let FS=0;
+function dlg(h,fn,fl){const d=$('#dlg');d.removeAttribute('style');d.innerHTML=`<div class="box"><button class="rb x${fl?' fl':''}" aria-label="關閉" onclick="$('#dlg').close()">${svg('close')}</button>${h}</div>`;d.onclick=fn||null;d.oninput=null;if(!d.open)d.showModal();return d}
+$('#dlg').addEventListener('close',stopCam);
+$('#dlg').addEventListener('close',()=>{if(FS&&document.fullscreenElement)document.exitFullscreen().catch(()=>{});FS=0});
+const ask=(m,b=['確定'])=>new Promise(res=>{const d=$('#cf');d.innerHTML=`<div class="box"><p>${m}</p><div class="row">${b.map((t,i)=>`<button class="bt pr" data-i="${i}">${t}</button>`).join('')}<button class="bt" data-i="-1">取消</button></div></div>`;d.onclick=e=>{const x=e.target.closest('[data-i]');if(x){d.onclose=null;d.close();res(+x.dataset.i)}};d.onclose=()=>{if(!d.open)res(-1)};d.showModal()});
+/* ---------- 主畫面 ---------- */
+const BT=[['search','搜尋',()=>{render();$('#q').focus()}],['mic','新增（歌手／專輯）',addBtn],['cd','CD 編號',cdBtn],['bar','條碼',barBtn],['cam','拍照',()=>$('#pho').click()],['scan','即時掃描',cam],['edit','手動建立',handBtn],['sys','系統',pSys]];
+$('#ic').innerHTML=BT.map((b,i)=>`<button class="rb" title="${b[1]}" aria-label="${b[1]}" data-i="${i}">${svg(b[0])}</button>`).join('');
+$('#ic').onclick=e=>{const b=e.target.closest('button');if(b)BT[b.dataset.i][2]()};
+$('#rx').innerHTML=svg('back');$('#q').oninput=render;
+function view(){
+ const q=$('#q').value.trim().toLowerCase(),f=cfg.f,Q=cfg.q,qg=Q.filter(k=>GEN.includes(k)),qr=Q.filter(k=>REG.includes(k)),y=i=>parseInt(i.year)||0,has=(a,b)=>String(a||'').toLowerCase().includes(b.toLowerCase());
+ const r=items.filter(i=>(!q||hay(i).includes(q))&&(!qg.length||qg.includes(i.genre))&&(!qr.length||qr.includes(i.region))&&(!f.g.length||f.g.includes(i.genre))&&(!f.r.length||f.r.includes(i.region))&&(!Q.includes('發燒片')||i.hot)&&(f.hot!='1'||i.hot)&&(f.hot!='0'||!i.hot)&&(!f.label||has(i.label,f.label))&&(!f.fmt||has(i.format,f.fmt))&&(!f.y1||y(i)>=+f.y1)&&(!f.y2||(y(i)&&y(i)<=+f.y2)));
+ const k=cfg.sort,d=cfg.dir=='asc'?1:-1;
+ const ix=new Map(items.map((x,n)=>[x,n]));return r.sort((a,b)=>d*((k=='year'?y(a)-y(b):String(a[k]||'').localeCompare(String(b[k]||''),'zh-Hant'))||ix.get(a)-ix.get(b)));
+}
+const totDur=i=>{const t=(i.tracks||[]).map(tn).filter(x=>x.h==null),q=t.map(x=>dsec(x.d));return t.length&&q.every(x=>x!=null)?fdur(q.reduce((a,b)=>a+b,0)):''};
+const card=i=>`<div class="cd${SEL&&SEL.has(i.id)?' sel':''}" data-id="${i.id}">${SEL?'<span class="sk">'+(SEL.has(i.id)?'✓':'')+'</span>':''}<div class="im"><img loading="lazy" referrerpolicy="no-referrer" src="${esc(i.cover)||PH}" onerror="this.onerror=null;this.src=PH">${i.hot?'<span class="hot">發燒</span>':''}</div><div class="in"><b>${esc(i.title)}</b><span>${nameStr(i)}</span><small>${esc([i.year,i.label,i.format].filter(Boolean).join(' · '))}</small><small>${esc(i.genre)}${i.region?' · '+esc(i.region):''}</small></div>${totDur(i)?`<span class="tm">${totDur(i)}</span>`:''}</div>`;
+function render(){
+ const v=view(),f=cfg.f;CH=[];
+ if(SEL){const ids=new Set(v.map(i=>i.id));[...SEL].forEach(id=>ids.has(id)||SEL.delete(id))}
+ cfg.q.forEach(k=>CH.push([k,()=>cfg.q=cfg.q.filter(x=>x!=k)]));
+ f.g.forEach(k=>CH.push([k,()=>f.g=f.g.filter(x=>x!=k)]));f.r.forEach(k=>CH.push([k,()=>f.r=f.r.filter(x=>x!=k)]));
+ if(f.hot)CH.push([f.hot=='1'?'發燒片':'非發燒片',()=>f.hot='']);
+ ['label','fmt'].forEach(k=>f[k]&&CH.push([f[k],()=>f[k]='']));
+ if(f.y1||f.y2)CH.push([(f.y1||'…')+'–'+(f.y2||'…')+' 年',()=>f.y1=f.y2='']);
+ if(CH.length)CH.push(['清除全部條件',()=>{cfg.q=[];cfg.f=DF()}]);
+ $('#chips').innerHTML=CH.map((c,i)=>`<span class="chip" data-i="${i}">${esc(c[0])}${i<CH.length-1?' ✕':''}</span>`).join('');
+ $('#cnt').innerHTML=`<span class="chip" style="cursor:default">${v.length} / ${items.length}</span>`;
+ $('#list').innerHTML=v.map(card).join('');selUI();paintCards();
+}
+$('#chips').onclick=e=>{const c=e.target.closest('.chip');if(c){CH[c.dataset.i][1]();saveCfg();render()}};
+$('#list').onclick=e=>{const c=e.target.closest('.cd');if(c)SEL?tog(c):info(c.dataset.id)};
+function info(id){
+ const i=items.find(x=>x.id==id);if(!i)return;
+ const skip=['title','artist','tracks','cover','url'],val=(k,v)=>k=='hot'?(v?'是':''):k=='rating'?(v>0?'★'.repeat(v):''):Array.isArray(v)?v.join('、'):String(v??'');
+ const rows=COLS.filter(c=>!skip.includes(c[1])).map(([t,k])=>[t,val(k,i[k]),k]).filter(r=>r[1]);
+ const tr=(i.tracks||[]).map(tn),tks=tr.filter(t=>t.h==null),secs=tks.map(t=>dsec(t.d)),tot=tks.length&&secs.every(x=>x!=null)?fdur(secs.reduce((a,b)=>a+b,0)):'';
+ let n=0;const am=new Map(),nc=a=>{const k=String(a).trim();if(!am.has(k))am.set(k,am.size%8+1);return am.get(k)},ci=a=>nc(a.split(/\s*[\/&+]\s*|,\s*/)[0]);
+ const nm3=x=>x.split(', ').map(q=>`<span style="color:var(--i${nc(q)})">${esc(q)}</span>`).join(', '),KC={composer:4,ensemble:5,conductor:6},oth=v=>v.split('、').map(x=>{const mm=x.match(/^(.*?)\s*(\([^()]*\))?$/),nme=mm[1],rl=mm[2]||'';return`<span style="color:var(--i${nc(nme)})">${esc(nme)}</span>${rl?`<span class="rl">${esc(rl)}</span>`:''}`}).join('、'),[nz,ne]=nameParts(i);
+ const crb=c=>(c||[]).length?`<span class="crg">${c.map(x=>{const j=x.indexOf(' – ');return j<0?`<span class="cr1"></span><span class="cr2">${nm3(x)}</span>`:`<span class="cr1">${esc(x.slice(0,j))}</span><span class="cr2">${nm3(x.slice(j+3))}</span>`}).join('')}</span>`:'';
+ const tl=tr.map(t=>{if(t.h!=null)return`<div class="th">${esc(t.h)}${crb(t.c)}</div>`;const k=++n;return`<div class="tr"><span class="tp">${esc(t.p||k)}</span><span class="tt">${t.a?`<em class="ta" style="color:var(--i${ci(t.a)})">${esc(t.a)}</em> – `:''}<span style="color:var(--i5)">${esc(t.t)}</span>${crb(t.c)}</span><span class="td">${esc(t.d)}</span></div>`}).join('');
+ dlg(`<div class="iv"><img referrerpolicy="no-referrer" src="${esc(i.cover)||PH}" onerror="this.onerror=null;this.src=PH"><h3 style="color:var(--i1)">${esc(i.title)}</h3><div class="ar"><span style="color:var(--i2)">${esc(nz)}</span>${ne?`<span style="color:var(--i3)">（${esc(ne)}）</span>`:''}</div></div>
+${tks.length?`<h4 class="hh"><span>${tot?'播放時間 '+tot:'曲目'}</span><button class="rb sm" id="tkb" aria-label="展開／收合曲目">${svg('chevu')}</button></h4><div class="tkw open" id="tkw">${tl}</div>`:''}
+${rows.length?`<h4>其他資料</h4><div class="kv">${rows.map(([t,v,k],ix)=>{const cn=KC[k]||(ix%8+1);return k=='others'?`<div class="kr"><span>${esc(t)}</span><div>${oth(v)}</div></div>`:k=='dnotes'?`<div class="kr"><span>${esc(t)}</span><div style="color:var(--i${cn})">${esc(v)}</div></div>`:`<span>${esc(t)}</span><div style="color:var(--i${cn})">${esc(v)}</div>`}).join('')}</div>`:''}
+<div class="row ir"><button class="bt dg" id="idl" aria-label="刪除">刪除</button>${/^https?:/.test(i.url)?`<a class="bt" href="${esc(i.url)}" target="_blank" rel="noopener">${i.appleId?'Apple Music':i.mbid?'MusicBrainz':'Discogs'}</a>`:''}${i.discogsId?'<button class="bt" id="irf">補抓資料</button>':''}<button class="bt pr" id="ie" aria-label="編輯">編輯</button></div>`,null,1);
+ if(i.discogsId)$('#irf').onclick=()=>refetch(i);
+ $('#ie').onclick=()=>edit(i.id);$('#idl').onclick=()=>del(i.id);
+ {const d=$('#dlg'),b=d.querySelector('.box');d.style.cssText='width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;border:0;border-radius:0;background:var(--bg)';
+  b.style.cssText='--t:var(--it);--m:var(--im);--f:var(--if);height:100vh;height:100dvh;max-height:none;padding:max(18px,env(safe-area-inset-top)) max(18px,calc((100vw - 720px)/2)) max(24px,env(safe-area-inset-bottom))'}
+ [...$('#dlg').querySelectorAll('.kr')].forEach(r=>{const l=r.firstElementChild,v=r.lastElementChild;if(v.offsetTop>l.offsetTop+2)v.classList.add('w2')});
+ const tkw=$('#tkw');if(tkw){tkw.style.setProperty('--pw',(Math.max(40,...[...tkw.querySelectorAll('.tp')].map(e=>e.scrollWidth))+2)+'px');
+  const g=tkw.querySelector('.crg'),w=Math.max(0,...[...tkw.querySelectorAll('.cr1')].map(e=>e.getBoundingClientRect().width));if(w&&g)tkw.style.setProperty('--rw',Math.min(w,g.getBoundingClientRect().width*.4)+'px');
+  $('#tkb').onclick=()=>{const o=tkw.classList.toggle('open');$('#tkb').innerHTML=svg(o?'chevu':'chevd')}}
+}
+function tog(c){const id=c.dataset.id;SEL.has(id)?SEL.delete(id):SEL.add(id);c.classList.toggle('sel',SEL.has(id));c.querySelector('.sk').textContent=SEL.has(id)?'✓':'';selUI()}
+function selUI(){$('#sbar').hidden=!SEL;$('#list').style.paddingBottom=SEL?'84px':'';if(!SEL)return;const n=view().length;$('#sn').textContent=`已選 ${SEL.size} / ${n}`;$('#sa').textContent=n&&SEL.size==n?'取消全選':'全選'}
+$('#sq').onclick=()=>{SEL=null;render()};
+$('#sa').onclick=()=>{const v=view();SEL=SEL.size==v.length?new Set():new Set(v.map(i=>i.id));render()};
+$('#sd').onclick=async()=>{if(!SEL||!SEL.size)return toast('尚未選取');const n=SEL.size;if(await ask(`刪除已選的 ${n} 張專輯？此操作無法復原。`,['刪除'])!=0)return;const o=items;items=items.filter(i=>!SEL.has(i.id));if(!save()){items=o;return}SEL=null;render();toast(`已刪除 ${n} 張`)};
+async function del(id){const i=items.find(x=>x.id==id);if(!i||await ask(`刪除「${esc(i.title)}」？`,['刪除'])!=0)return;items=items.filter(x=>x.id!=id);save();render();$('#dlg').open&&$('#dlg').close()}
+/* ---------- 檢視／編輯 ---------- */
+function edit(id,pre){
+ const i=id?items.find(x=>x.id==id):null,v={...BL,...(i||pre||{})};
+ const T=(l,n,t='text')=>`<label>${l}<input name="${n}" type="${t}" value="${esc(Array.isArray(v[n])?v[n].join('、'):v[n])}"></label>`;
+ const S=(l,n,o)=>`<label>${l}<select name="${n}">${o.map(x=>`<option${x==v[n]?' selected':''}>${x}</option>`).join('')}</select></label>`;
+ dlg(`<form id="ef"><h3>${i?'編輯':'新增收藏'}</h3><div class="g">${T('專輯名稱','title')}${T('藝人／歌手','artist')}${T('中文藝名','aka')}${T('參與者','others')}${T('發行年份','year')}${T('發行日期','date')}${T('唱片公司','label')}${T('系列／版本','series')}${T('目錄編號','catno')}${T('格式','format')}${T('國家','country')}${T('條碼 UPC／EAN','barcode')}${T('Discogs ID','discogsId')}${T('MusicBrainz ID','mbid')}${T('Apple Music ID','appleId')}${T('來源類型','dgenre')}${T('Discogs 網址','url')}${T('封面圖片網址','cover')}</div>
+<div class="g">${S('主要音樂類型','genre',GEN)}${S('語系','region',['',...REG])}${S('評分','rating',[0,1,2,3,4,5])}${T('自訂標籤（以、分隔）','tags')}</div>
+<div class="g" id="dc">${T('作曲家','composer')}${T('音樂體裁','ctype')}${T('指揮','conductor')}${T('演出團體／樂團','ensemble')}</div>
+<div class="g" id="dj">${T('風格流派','sty')}${T('核心樂器／編制','instr')}</div>
+<div id="dp"><div class="g">${S('流行類別','ptype',['','男歌手','女歌手','團體'])}</div><div class="g" id="dg">${S('團體類型','gtype',['','男團','女團','混合','二重唱','三重唱'])}${T('團體成員（以、分隔）','members')}</div></div>
+<div class="g">${T('購買日期','buyDate','date')}${T('價格','price')}${T('幣別','currency')}${T('購買來源','source')}</div>
+<label>曲目（每行：位置 | 標題 | 時間；# 開頭為分段標題；縮排 - 開頭為該曲的演出／製作人員）<textarea name="tracks" rows="8">${esc((v.tracks||[]).map(trLine).join('\n'))}</textarea></label><label>版本說明<textarea name="dnotes" rows="3">${esc(v.dnotes)}</textarea></label><label>備註<textarea name="note" rows="2">${esc(v.note)}</textarea></label>
+<label class="ck"><input type="checkbox" name="hot"${v.hot?' checked':''}>發燒片</label>
+<div class="row"><button class="bt pr">儲存</button>${i?'<button type="button" class="bt dg" id="ed">刪除</button>':''}${/^https?:/.test(v.url)?`<a class="bt" href="${esc(v.url)}" target="_blank" rel="noopener">Discogs</a>`:''}</div></form>`);
+ const F=$('#ef'),gs=()=>{const g=F.elements.genre.value;$('#dc').hidden=g!='古典';$('#dj').hidden=!(g=='古典'||g=='爵士'||g=='藍調');$('#dp').hidden=g!='流行';$('#dg').hidden=F.elements.ptype.value!='團體'};
+ gs();F.addEventListener('change',gs);F.addEventListener('change',e=>{if(e.target.name=='genre'&&e.target.value=='流行'&&!F.elements.region.value){const g=n=>F.elements[n].value;F.elements.region.value=ar({title:g('title'),tracks:trParse(g('tracks')),country:g('country'),sty:g('sty'),dgenre:g('dgenre')})}});
+ if(i)$('#ed').onclick=()=>del(i.id);
+ F.onsubmit=e=>{e.preventDefault();const fd=new FormData(F),o={};for(const[k,x]of fd)o[k]=String(x).trim();
+  if(!o.title)return toast('請輸入專輯名稱');
+  o.tracks=trParse(o.tracks);o.tags=o.tags.split(/[,，、]/).map(s=>s.trim()).filter(Boolean);o.hot=fd.has('hot');o.rating=+o.rating||0;o.aka=cleanAka(o.artist,o.aka,o.region);
+  if(i)Object.assign(i,o);else items.push({...BL,...o,id:uid(),added:today(),orig:null});
+  if(save()){render();i?info(i.id):$('#dlg').close();toast('已儲存')}};
+}
+/* ---------- 統計 ---------- */
+function pStats(){
+ const n=items.length,cnt=k=>{const m={};items.forEach(i=>{const v=i[k]||'未填';m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])},set=k=>new Set(items.map(i=>String(i[k]||'').trim()).filter(Boolean)).size;
+ const bar=(t,a)=>`<h4>${t}</h4>`+a.map(([k,v])=>`<div class="br"><span>${esc(k)}</span><i style="width:${v/n*100}%"></i><em>${v}</em></div>`).join('');
+ dlg(`<h3>&nbsp;</h3><div class="sg"><div><b>${n}</b>收藏總數</div><div><b>${set('artist')}</b>藝人</div><div><b>${set('label')}</b>唱片公司</div><div><b>${items.filter(i=>i.hot).length}</b>發燒片</div></div>${bar('音樂類型',cnt('genre'))}${bar('語系',cnt('region'))}${bar('格式',cnt('format'))}`);
+}
+/* ---------- 篩選／快選／排序 ---------- */
+function pFilter(){
+ const f=cfg.f,cb=(n,a)=>a.map(x=>`<label class="ck"><input type="checkbox" data-n="${n}" value="${x}"${f[n].includes(x)?' checked':''}>${x}</label>`).join('');
+ const d=dlg(`<h3>&nbsp;</h3><h4>音樂類型</h4><div class="cw" style="gap:12px">${cb('g',GEN)}</div><h4>語系</h4><div class="cw" style="gap:12px">${cb('r',REG)}</div><div class="g"><label>發燒片<select id="fh"><option value="">全部</option><option value="1">僅發燒片</option><option value="0">非發燒片</option></select></label><label>唱片公司<input id="fl" value="${esc(f.label)}"></label><label>格式<input id="ff" value="${esc(f.fmt)}"></label><label>年份起<input id="y1" type="number" value="${esc(f.y1)}"></label><label>年份迄<input id="y2" type="number" value="${esc(f.y2)}"></label></div><div class="row"><button class="bt" id="fc">清除篩選</button></div>`,e=>{if(e.target.closest('#fc')){cfg.f=DF();saveCfg();render();pFilter()}});
+ $('#fh').value=f.hot;
+ d.oninput=()=>{const q=n=>[...d.querySelectorAll(`[data-n="${n}"]:checked`)].map(x=>x.value);cfg.f={g:q('g'),r:q('r'),hot:$('#fh').value,label:$('#fl').value.trim(),fmt:$('#ff').value.trim(),y1:$('#y1').value,y2:$('#y2').value};saveCfg();render()};
+}
+function pQuick(){
+ const L=['全部','發燒片',...GEN.slice(0,4),...REG.slice(0,5)];
+ dlg(`<h3>&nbsp;</h3><div class="cw">${L.map(k=>`<button class="chip${cfg.q.includes(k)||(k=='全部'&&!cfg.q.length&&!hasF())?' on':''}" data-k="${k}">${k}</button>`).join('')}</div>`,e=>{const b=e.target.closest('[data-k]');if(!b)return;const k=b.dataset.k;if(k=='全部'){cfg.q=[];cfg.f=DF()}else cfg.q=cfg.q.includes(k)?cfg.q.filter(x=>x!=k):[...cfg.q,k];saveCfg();render();pQuick()});
+}
+function pSort(){
+ const K=[['title','專輯名稱'],['artist','藝人'],['year','發行年份'],['added','加入收藏日期'],['label','唱片公司']];
+ dlg(`<h3>&nbsp;</h3><div class="cw">${K.map(([k,t])=>`<button class="chip${cfg.sort==k?' on':''}" data-k="${k}">${t}</button>`).join('')}</div><div class="cw"><button class="chip${cfg.dir=='asc'?' on':''}" data-d="asc">升冪</button><button class="chip${cfg.dir=='desc'?' on':''}" data-d="desc">降冪</button></div>`,e=>{const b=e.target.closest('[data-k],[data-d]');if(!b)return;if(b.dataset.k)cfg.sort=b.dataset.k;else cfg.dir=b.dataset.d;saveCfg();render();pSort()});
+}
+/* ---------- 匯出／匯入／系統 ---------- */
+const dl=(n,t,m)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)};
+const expJ=()=>{dl('cd-collection-'+today().replace(/-/g,'')+'.json',JSON.stringify({app:'cd-collection',version:2,items},null,1),'application/json');toast('已匯出 JSON')};
+const cs=v=>'"'+String(Array.isArray(v)?v.join(' | '):v===true?'是':v===false?'否':v??'').replace(/"/g,'""')+'"';
+const expC=()=>{dl('cd-collection-'+today().replace(/-/g,'')+'.csv','\ufeff'+[COLS.map(c=>cs(c[0])),...items.map(i=>COLS.map(c=>cs(c[1]=='tracks'?(i.tracks||[]).map(trLine).join('\n'):i[c[1]])))].map(r=>r.join(',')).join('\r\n'),'text/csv;charset=utf-8');toast('已匯出 CSV')};
+function pExport(){dlg(`<h3>&nbsp;</h3><div class="col"><button class="bt" id="ej">JSON 備份</button><button class="bt" id="ec">CSV 匯出</button><button class="bt" id="ei">JSON 匯入</button></div>`);$('#ej').onclick=expJ;$('#ec').onclick=expC;$('#ei').onclick=()=>$('#imp').click()}
+$('#imp').onchange=async e=>{
+ const f=e.target.files[0];e.target.value='';if(!f)return;let a;
+ try{const j=JSON.parse(await f.text());a=Array.isArray(j)?j:j.items;if(!Array.isArray(a)||a.some(x=>!x||typeof x!='object'||!x.title))throw 0}catch(_){return toast('檔案格式不正確')}
+ const c=await ask(`檔案內有 ${a.length} 筆資料。`,['合併（略過重複）','取代全部']);if(c<0)return;
+ const n=a.map(x=>({...BL,...x,tracks:Array.isArray(x.tracks)?x.tracks:[],tags:Array.isArray(x.tags)?x.tags:[],id:x.id||uid()})),old=items;let add=n.length;
+ if(c==0){const ks=new Set(items.map(dkey));items=[...items,...n.filter(x=>!ks.has(dkey(x))&&ks.add(dkey(x)))];add=items.length-old.length}
+ else{if(await ask('將以匯入資料取代目前全部收藏，確定？',['確定取代'])!=0)return;items=n}
+ if(!save()){items=old;return}render();toast(`已匯入 ${add} 筆`);$('#dlg').open&&$('#dlg').close();
+};
+function openEd(i){
+ const c=PAL['--c'+(i+1)]||NINE[i];
+ $('#edw').innerHTML=`<div class="row" style="margin-top:6px"><span style="white-space:nowrap">顏色 ${i+1}${PAL.bi===i?'（背景）':''}</span><input id="hx2" value="${c}" maxlength="7" autocomplete="off" style="flex:1;min-width:0"><input type="color" id="hpk" value="${c}" style="width:44px;height:36px;padding:2px"><button class="bt" id="hok">套用</button><button class="bt" id="hno">取消</button></div>`;
+ $('#hpk').oninput=()=>{$('#hx2').value=$('#hpk').value};
+ $('#hx2').oninput=()=>{const v=$('#hx2').value.trim();if(/^#?[0-9a-f]{6}$/i.test(v))$('#hpk').value=(v[0]=='#'?v:'#'+v).toLowerCase()};
+ $('#hok').onclick=()=>editNine(i,$('#hx2').value);$('#hno').onclick=()=>{$('#edw').innerHTML=''};
+}
+function editNine(i,hex){
+ let h=String(hex).trim().replace('#','');if(h.length==3)h=[...h].map(c=>c+c).join('');
+ if(!/^[0-9a-f]{6}$/i.test(h))return toast('色碼格式不正確（例：#a1b2c3）',3000);
+ NINE.forEach((_,k)=>{if(PAL['--c'+(k+1)])NINE[k]=PAL['--c'+(k+1)]});
+ NINE[i]='#'+h.toLowerCase();
+ repaint(PAL.bi,(PAL.pool||[]).map(x=>x-1));
+ if(cfg.rand===0)lockPal();
+ render();pSys();toast(cfg.rand===0?'已套用並鎖定':'已套用；要保留請把隨機配色設為 OFF',3500);
+}
+function pSys(){
+ dlg(`<h3>&nbsp;</h3><h4>搜尋來源</h4><div class="cw"><button class="chip${S()||AP()?'':' on'}" data-s="discogs">Discogs</button><button class="chip${S()?' on':''}" data-s="mb">MusicBrainz</button><button class="chip${AP()?' on':''}" data-s="apple">Apple Music</button></div><div class="col" style="margin-top:12px"><button class="bt" id="m1">統計</button><button class="bt" id="m2">篩選</button><button class="bt" id="m3">快選</button><button class="bt" id="m4">排序</button><button class="bt" id="m5">匯出</button><button class="bt" id="s9">批次掃描</button><button class="bt" id="s1">匯入 JSON</button><button class="bt" id="s2">備份資料</button><button class="bt" id="s3">還原資料</button><button class="bt" id="s8">批量刪除</button><button class="bt dg" id="s6">清除全部資料</button></div><h4>配色</h4><div class="swg">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-w="${n-1}" aria-label="修改顏色 ${n}"><i style="background:var(--c${n});box-shadow:${PAL.bi===n-1?'0 0 0 2px var(--t),':''}var(--fx)"></i></button>`).join('')}</div><div id="edw"></div><div style="margin:6px 0;font-size:12px;color:var(--m);word-break:break-all;user-select:all">${palText()}</div><div class="col"><button class="bt" id="s13">變更配色</button><button class="bt row3" id="s11"><span>隨機配色  (${cfg.rand===0?'OFF':'ON'})</span><span class="sw${cfg.rand===0?'':' on'}"></span></button></div>`,e=>{const w=e.target.closest('[data-w]');if(w)return openEd(+w.dataset.w);const b=e.target.closest('[data-s]');if(b){cfg.src=b.dataset.s;saveCfg();srcChip();pSys();toast('搜尋來源：'+SN())}});
+ $('#m1').onclick=pStats;$('#m2').onclick=pFilter;$('#m3').onclick=pQuick;$('#m4').onclick=pSort;$('#m5').onclick=pExport;$('#s9').onclick=batch;$('#s13').onclick=()=>{$('#dlg').close();openCT()};
+ $('#s11').onclick=()=>{if(cfg.rand===0){cfg.rand=1;try{localStorage.removeItem(LSP)}catch(_){}toast('隨機配色已開啟：每次開啟都會換色',3000)}else{cfg.rand=0;lockPal();toast('已鎖定目前配色，之後開啟都用這一組',3000)}saveCfg();pSys()};
+ $('#s1').onclick=$('#s3').onclick=()=>$('#imp').click();$('#s2').onclick=expJ;
+ $('#s8').onclick=()=>{$('#dlg').close();SEL=new Set();render()};
+ $('#s6').onclick=async()=>{if(await ask(`將刪除全部 ${items.length} 筆收藏。`,['繼續'])!=0||await ask('再次確認：資料將永久刪除，無法復原。',['永久刪除'])!=0)return;const o=items;items=[];if(!save())items=o;render();toast('已清除');$('#dlg').close()};
+}
+/* ---------- Discogs ---------- */
+const api=async p=>{const w=lastD+1000-Date.now();lastD=Date.now()+Math.max(w,0);if(w>0)await sleep(w);return getj(API+p+(p.includes('?')?'&':'?')+'token='+TOKEN)},mb=p=>getj(MB+p+(p.includes('?')?'&':'?')+'fmt=json'),sleep=ms=>new Promise(r=>setTimeout(r,ms)),S=()=>cfg.src=='mb';
+async function getj(u){
+ const c=new AbortController(),t=setTimeout(()=>c.abort(),15000);
+ try{const r=await fetch(u,{signal:c.signal});
+  if(r.status==401)throw Error('Token 無效或已過期');if(r.status==404)throw Error('查無資料');if(r.status==400)throw Error('查詢格式有誤');if(r.status==429||r.status==503||(r.status==403&&u.includes('itunes')))throw Error('請求過於頻繁，請稍後再試');if(!r.ok)throw Error('來源服務錯誤 '+r.status);
+  try{return await r.json()}catch(_){throw Error('回應格式異常')}
+ }catch(e){if(e.name=='AbortError')throw Error('連線逾時');if(e instanceof TypeError)throw Error('無法連線（網路中斷或被瀏覽器擋下）。請直接用瀏覽器開啟檔案，勿在預覽視窗中使用');throw e}finally{clearTimeout(t)}
+}
+const nm=n=>String(n||'').replace(/\s\(\d+\)$/,'');
+function normS(s){const t=(s.title||'').split(' - '),a=nm(t.shift()),c=s.cover_image||s.thumb||'';return{discogsId:s.id,title:t.join(' - ')||a,artist:t.length?a:'',year:s.year||'',label:(s.label||[])[0]||'',format:(s.format||[]).join(', '),country:s.country||'',barcode:(s.barcode||[])[0]||'',cover:/spacer/.test(c)?'':c,url:s.uri?'https://www.discogs.com'+s.uri:'',tracks:[]}}
+const GM={Classical:'古典',Jazz:'爵士',Blues:'藍調',Pop:'流行',Rock:'流行'},SM={Swing:'搖擺樂',Bop:'咆哮樂','Cool Jazz':'酷派爵士',Modal:'調式爵士',Fusion:'融合爵士',Vocal:'人聲爵士','Delta Blues':'三角洲藍調','Chicago Blues':'芝加哥藍調','Texas Blues':'德州藍調','Electric Blues':'電聲藍調'},FM={Opera:'歌劇',Concerto:'協奏曲',Symphony:'交響曲',Sonata:'奏鳴曲',Choral:'合唱',Oratorio:'清唱劇',Suite:'組曲',Requiem:'安魂曲','Chamber Music':'室內樂',Ballet:'芭蕾'};
+const INS=/piano|bass|drum|sax|trumpet|trombone|guitar|violin|viola|cello|organ|clarinet|flute|vibraphone|vibes|harmonica|percussion|keyboard|synthesizer|horn|vocal|banjo|accordion|oboe|harp|conga|bongo|cornet|bassoon|tuba|mandolin|sitar/i;
+const an=l=>{const seen=new Set(),o=[];(l||[]).forEach(a=>{const n=nm(a.anv||a.name);if(seen.has(n))return;seen.add(n);o.push([n,a.join])});return o.map(([n,j],i)=>n+(i<o.length-1?(j&&j.trim()&&j.trim()!==','?' '+j.trim()+' ':', '):'')).join('')};
+const clr=r=>String(r||'').replace(/\s*[\[(][^\]\)]*[\u3040-\u30ff\u3400-\u9fff][^\]\)]*[\])]/g,'').trim();
+const cr1=e=>({r:clr(e.role),n:nm(e.anv||e.name)});
+const splitRole=r=>{const o=[];let d=0,c='';for(const ch of String(r||'')){if('[('.includes(ch))d++;else if('])'.includes(ch))d=Math.max(0,d-1);if(ch==','&&!d){o.push(c);c=''}else c+=ch}o.push(c);return o.map(x=>x.trim()).filter(Boolean)};
+const grp=a=>{const m=new Map();a.forEach(x=>{if(!x.n)return;splitRole(x.r).forEach(r=>{const k=r.toLowerCase();if(!m.has(k))m.set(k,{r,n:[]});const v=m.get(k);if(!v.n.includes(x.n))v.n.push(x.n)})});return[...m.values()].sort((p,q)=>p.r.localeCompare(q.r,'en',{sensitivity:'base'})).map(v=>v.r+' – '+v.n.join(', '))};
+const trk=l=>(l||[]).flatMap(t=>t.type_=='heading'?(t.title?[{h:t.title,_c:(t.extraartists||[]).map(cr1)}]:[]):t.type_=='index'?[...(t.title?[{h:t.title,_c:(t.extraartists||[]).map(cr1)}]:[]),...trk(t.sub_tracks)]:[{p:t.position||'',t:t.title||'',d:t.duration||'',a:an(t.artists),_c:(t.extraartists||[]).map(cr1)}]);
+function headC(T){let i=0;while(i<T.length){if(T[i].h!=null){let j=i+1;while(j<T.length&&T[j].h==null)j++;const g=T.slice(i+1,j);if(g.length>1){const com=(g[0].c||[]).filter(x=>g.every(t=>(t.c||[]).includes(x)));if(com.length){T[i].c=[...new Set([...(T[i].c||[]),...com])];g.forEach(t=>{t.c=(t.c||[]).filter(x=>!com.includes(x))})}}i=j}else i++}}
+function relCr(list,ex){const pos=list.filter(x=>x.h==null).map(x=>String(x.p||''));
+ ex.filter(e=>e.tracks).forEach(e=>{const sel=new Set();String(e.tracks).split(',').forEach(tk=>{tk=tk.trim();const m=tk.match(/^(.+?)\s+to\s+(.+)$/i);if(m){const a=pos.indexOf(m[1].trim()),b=pos.indexOf(m[2].trim());if(a>=0&&b>=a)for(let i=a;i<=b;i++)sel.add(i)}else{const i=pos.indexOf(tk);if(i>=0)sel.add(i)}});
+  let n=0;list.forEach(x=>{if(x.h!=null)return;if(sel.has(n))x._c.push(cr1(e));n++})})}
+const CJK=/[\u3040-\u30ff\u31f0-\u31ff\u3400-\u9fff\uac00-\ud7af\uf900-\ufaff]/,KANA=/[\u3040-\u30ff\u31f0-\u31ff\uac00-\ud7af\u1100-\u11ff]/,HAN=/[\u3400-\u9fff\uf900-\ufaff]/;
+const JKS=/j-?pop|k-?pop|enka|kay[oō]kyoku|visual kei|anison|city pop|shibuya|j-?rock/i,CM=/^(taiwan|china|hong kong|singapore|malaysia|macau|macao|tw|cn|hk|sg|my|mo)$/i,JK=/^(japan|south korea|korea|jp|kr)$/i;
+function autoRegion(d){
+ const st=[d._st,d.sty,d.dgenre].join(' '),tt=d.title||'',ar0=d.artist||'',c=String(d.country||'').trim(),J=JK.test(c);
+ if(JKS.test(st)||/[\u3040-\u309f\uac00-\ud7af]/.test(tt+' '+ar0))return'東洋';
+ const T=(d.tracks||[]).map(tn).filter(t=>t.h==null&&t.t).map(t=>t.t),L=T.length?T:[tt],n=L.length;
+ let jk=0,zh=0;L.forEach(x=>{if(KANA.test(x))jk++;else if(HAN.test(x))zh++});
+ if(jk&&jk*2>=n)return'東洋';
+ const hi=L.filter(x=>/[\u3040-\u309f]/.test(x)).length;
+ if(hi&&(HAN.test(ar0)||KANA.test(ar0))||hi>=2||(jk&&zh))return'東洋';
+ if(J&&((jk+zh)*2>=n&&jk+zh>0||HAN.test(ar0)))return'東洋';
+ if(zh&&zh*2>=n)return'國語';
+ return T.length?'西洋':'';
+}
+const ar=d=>autoRegion(d)||'國語';
+const SS='张陈刘许郑黄吴邓孙谭罗萧韩华欧凯伦们这个国时来对说会发后见学长门问间开关运车东电书无头点还实现边过进听觉红样热爱乐龙飞风马鸟鱼艺业专辑词杨赵谢卢吕蒋苏顾叶范钟钱项贾汤严陆丽颖莹静铭兰梦灵洁贤欢惊荣兴义乌云与万为从众优传价达迈恋声语谁让认请难题顺须饭馆鸡鲁钢铁银镜阳阴队际随双变战争汉济泪湾灯爷尔乔伟凤丰宝宫剑刚创动务励劳势卫单历厅压参员响园围图场坏坚处备复够夹奋奖妇娱婴宁宾将尘层岁岛师币帮带广庆应异弯径恶悬惯愿户扩择报担拟拥挥损换据摄数断旧显晓暂术机杀条构枪档检楼毕气汇沟没浅测贞诗钰铃钧骏骆鹏鸿鹤苹莲蔷艳蓝鲍龚龄韵',TT='張陳劉許鄭黃吳鄧孫譚羅蕭韓華歐凱倫們這個國時來對說會發後見學長門問間開關運車東電書無頭點還實現邊過進聽覺紅樣熱愛樂龍飛風馬鳥魚藝業專輯詞楊趙謝盧呂蔣蘇顧葉範鍾錢項賈湯嚴陸麗穎瑩靜銘蘭夢靈潔賢歡驚榮興義烏雲與萬為從眾優傳價達邁戀聲語誰讓認請難題順須飯館雞魯鋼鐵銀鏡陽陰隊際隨雙變戰爭漢濟淚灣燈爺爾喬偉鳳豐寶宮劍剛創動務勵勞勢衛單歷廳壓參員響園圍圖場壞堅處備復夠夾奮獎婦娛嬰寧賓將塵層歲島師幣幫帶廣慶應異彎徑惡懸慣願戶擴擇報擔擬擁揮損換據攝數斷舊顯曉暫術機殺條構槍檔檢樓畢氣匯溝沒淺測貞詩鈺鈴鈞駿駱鵬鴻鶴蘋蓮薔艷藍鮑龔齡韻',S2T=new Map([...SS].map((c,i)=>[c,TT[i]])),SIMP=new Set([...SS]);
+const kn=x=>[...String(x||'').toLowerCase().replace(/[\s\-_·•・.,()（）]/g,'')].map(c=>c=='杰'?'傑':S2T.get(c)||c).join('');
+function cleanAka(artist,aka,region){
+ if(region=='西洋')return'';
+ const ok=x=>/^[\u3400-\u9fff\uf900-\ufaff·•]+$/.test(x)&&![...x].some(c=>SIMP.has(c))&&kn(x)!=kn(artist);
+ return String(aka||'').split(/[、,，;；]/).map(x=>x.trim()).find(ok)||'';
+}
+const dn=a=>[...new Set(String(a||'').split(', '))].join(', ');
+const nameParts=i=>{const a=dn(i.artist);if(i.region=='西洋')return[i.artistEn||a,''];const en=i.artistEn&&kn(i.artistEn)!=kn(a)?i.artistEn:'',main=i.aka||a,sub=i.aka?a:en;return[main,sub&&kn(sub)!=kn(main)?sub:'']};
+const nameStr=i=>{const[m,sb]=nameParts(i);return sb?esc(m)+'（'+esc(sb)+'）':esc(m)};
+async function enrich(d){
+ if(!d.aids||!d.aids.length)return d;
+ const n=[],z=[],k=new Set(d.aka?d.aka.split('、'):[]);
+ for(const id of d.aids.slice(0,3)){try{const a=await api('/artists/'+id);if(d.genre=='流行')(a.members||[]).forEach(m=>n.push(nm(m.name)));[...(a.namevariations||[]),...(a.aliases||[]).map(x=>x.name),a.realname].filter(Boolean).forEach(v=>{z.push(v);if(CJK.test(v))k.add(nm(v))})}catch(_){}}
+ d={...d,aka:[...k].join('、'),_nm:z.join(' ')};
+ return n.length?{...d,members:[...new Set(n)].join('、'),ptype:'團體'}:d;
+}
+async function refetch(i){
+ toast('抓取中…',6e4);
+ try{const d=await enrich(normD(await api('/releases/'+i.discogsId)));
+  Object.keys(d).forEach(k=>{if(k=='det'||k=='aids'||k=='_nm'||k=='_st')return;const o=i[k],empty=o==null||o===''||(Array.isArray(o)&&!o.length);
+   if(empty||(k=='tracks'&&Array.isArray(o)&&(o.some(t=>typeof t=='string')||(!o.some(t=>t.c&&t.c.length)&&d[k].some(t=>t.c&&t.c.length))))||(k=='genre'&&o=='其他'&&d[k]!='其他'))i[k]=d[k]});
+  if(d.aka)i.aka=[...new Set([...(i.aka?i.aka.split('、'):[]),...d.aka.split('、')])].join('、');
+  if(i.genre=='流行'&&i.region!='台語')i.region=ar({...i,_st:d._st});
+  i.aka=cleanAka(i.artist,i.aka,i.region);
+  save();render();info(i.id);toast('已補齊缺少的資料')}catch(e){toast(e.message,3500)}
+}
+function normD(r){const ex=r.extraartists||[],by=re=>[...new Set(ex.filter(e=>re.test(e.role||'')).map(e=>nm(e.name)))].join('、'),im=(r.images||[]).find(x=>x.type=='primary')||(r.images||[])[0]||{},b=(r.identifiers||[]).find(x=>/barcode/i.test(x.type)),sts=r.styles||[],gs=r.genres||[];
+ const T=trk(r.tracklist);relCr(T,ex);T.forEach(t=>{if(t._c){t.c=grp(t._c);delete t._c}});headC(T);
+ return{det:1,aids:(r.artists||[]).map(a=>a.id).filter(x=>x&&x!=194),discogsId:r.id,title:r.title||'',artist:an(r.artists),artistEn:[...new Set((r.artists||[]).map(a=>nm(a.name)))].join(', '),aka:'',others:ex.map(e=>{const r=clr(e.role);return nm(e.name)+(r?`(${r})`:'')}).join('、'),year:r.year||'',date:r.released||'',label:[...new Set((r.labels||[]).map(l=>l.name))].join(', '),catno:[...new Set((r.labels||[]).map(l=>l.catno).filter(c=>c&&c.toLowerCase()!='none'))].join(', '),series:(r.series||[]).map(x=>x.name).join(', '),format:(r.formats||[]).map(f=>[(f.qty>1?f.qty+'× ':'')+f.name,...(f.descriptions||[])].join(', ')).join(' / '),country:r.country||'',barcode:b?b.value:'',url:r.uri||'',cover:im.uri||r.thumb||'',tracks:T,genre:(()=>{const k=['Classical','Pop','Rock','Jazz','Blues'].find(x=>gs.includes(x));return k?GM[k]:'其他'})(),dgenre:gs.join('、'),sty:sts.filter(x=>!FM[x]).map(x=>SM[x]||x).join('、'),ctype:[...new Set(sts.map(x=>FM[x]).filter(Boolean))].join('、'),composer:by(/composed by|music by|written[- ]by/i),conductor:by(/conductor/i),ensemble:by(/orchestra|choir|chorus|ensemble|quartet|quintet|trio|band/i),instr:[...new Set(ex.flatMap(e=>clr(e.role).split(',').map(x=>x.trim()).filter(x=>INS.test(x))))].join('、'),dnotes:r.notes||'',_st:sts.join(' ')}}
+const mbn=r=>(r['artist-credit']||[]).map(a=>(a.name||(a.artist||{}).name||'')+(a.joinphrase||'')).join('');
+const mbl=r=>[...new Set((r['label-info']||[]).map(l=>l.label&&l.label.name).filter(Boolean))].join(', ');
+function normMS(r){return{mbid:r.id,discogsId:'',title:r.title||'',artist:mbn(r),year:(r.date||'').slice(0,4),date:r.date||'',label:mbl(r),catno:[...new Set((r['label-info']||[]).map(l=>l['catalog-number']).filter(Boolean))].join(', '),format:[...new Set((r.media||[]).map(m=>m.format).filter(Boolean))].join(', '),country:r.country||'',barcode:r.barcode||'',cover:'https://coverartarchive.org/release/'+r.id+'/front-500',url:'https://musicbrainz.org/release/'+r.id,tracks:[]}}
+function normM(r){const m=r.media||[],fm=ms=>ms?fdur(Math.round(ms/1000)):'';return{...normMS(r),det:1,tracks:m.flatMap(d=>(d.tracks||[]).map(t=>({p:(m.length>1?d.position+'-':'')+(t.number||t.position),t:t.title||'',d:fm(t.length||(t.recording||{}).length),a:''})))}}
+const rk=x=>String(x.discogsId||x.mbid||x.appleId);
+async function go(fn,pre){
+ toast('搜尋中…',15000);
+ try{const l=await fn();
+  if(!l.length){toast('查無結果');if(pre)ask('查無結果，已保留輸入內容。',['手動建立','重新搜尋']).then(c=>c==0?edit(null,pre.m):c==1?$('#q').focus():0);return}
+  if(l.length==1)return await addOne(l[0]);toast('找到 '+l.length+' 筆',1500);showRes(l)}catch(e){toast(e.message,3500)}
+}
+const mbs=q=>mb('/release?limit=30&query='+encodeURIComponent(q)).then(j=>(j.releases||[]).map(normMS)),mq=v=>String(v).replace(/([+\-&|!(){}\[\]^"~*?:\\\/])/g,'\\$1');
+const srch=q=>api('/database/search?type=release&per_page=30&'+q).then(j=>(j.results||[]).map(normS));
+const AP=()=>cfg.src=='apple',SN=()=>S()?'MusicBrainz':AP()?'Apple Music':'Discogs',AQ='https://itunes.apple.com',srcChip=()=>{$('#srcc').textContent=SN()};
+const AG=g=>/classical/i.test(g)?'古典':/pop|rock/i.test(g)?'流行':/jazz/i.test(g)?'爵士':/blues/i.test(g)?'藍調':'其他';
+function normAS(r){const g=r.primaryGenreName||'';return{appleId:r.collectionId,discogsId:'',title:r.collectionName||'',artist:r.artistName||'',year:(r.releaseDate||'').slice(0,4),date:(r.releaseDate||'').slice(0,10),format:'Apple Music',country:r.country||'',cover:(r.artworkUrl100||'').replace('100x100bb','600x600bb'),url:r.collectionViewUrl||'',genre:AG(g),dgenre:g,_st:g,tracks:[]}}
+function normA(j){const rs=j.results||[],c=rs.find(r=>r.wrapperType=='collection')||{},t=rs.filter(r=>r.wrapperType=='track').sort((a,b)=>(a.discNumber||1)-(b.discNumber||1)||(a.trackNumber||0)-(b.trackNumber||0)),m=Math.max(1,...t.map(x=>x.discNumber||1));
+ return{...normAS(c),det:1,tracks:t.map(x=>({p:(m>1?(x.discNumber||1)+'-':'')+(x.trackNumber||''),t:x.trackName||'',d:x.trackTimeMillis?fdur(Math.round(x.trackTimeMillis/1000)):'',a:x.artistName&&x.artistName!=c.artistName?x.artistName:''}))}}
+const ijson=u=>new Promise((res,rej)=>{const n='_ap'+Date.now()+Math.floor(Math.random()*1e4),sc=document.createElement('script'),t=setTimeout(()=>{c();rej(Error('連線逾時'))},15000),c=()=>{clearTimeout(t);delete window[n];sc.remove()};
+ window[n]=d=>{c();res(d)};sc.onerror=()=>{c();rej(Error('Apple Music 連線失敗（網路中斷、被阻擋或請求過於頻繁），請稍後再試'))};sc.src=u+(u.includes('?')?'&':'?')+'callback='+n;document.head.appendChild(sc)});
+const aps=q=>ijson(AQ+'/search?media=music&entity=album&limit=30&country=tw&'+q).then(j=>(j.results||[]).map(normAS));
+const apl=q=>ijson(AQ+'/lookup?country=tw&'+q).then(j=>(j.results||[]).filter(r=>r.wrapperType=='collection').map(normAS));
+const bv=c=>{c=String(c).replace(/\D/g,'')||String(c);const a=[c];if(c.length==12)a.push('0'+c);if(c.length==13&&c[0]=='0')a.push(c.slice(1));return a};
+const mbId=async v=>{const u=(v.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)||[])[0];
+ if(u)return[normM(await mb('/release/'+u+MBINC))];
+ let l=await mbs('catno:('+mq(v)+')');if(!l.length)l=await mbs('"'+mq(v)+'"');return l};
+const byBar=c=>go(()=>AP()?apl('upc='+bv(c).join(',')):S()?mbs('barcode:('+bv(c).map(x=>'"'+x+'"').join(' OR ')+')'):srch('barcode='+encodeURIComponent(c)),{m:{barcode:c},p:{bc:c}});
+const byId=v=>go(()=>AP()?(/^\d+$/.test(v)?apl('id='+v):aps('term='+encodeURIComponent(v))):S()?mbId(v):/^\d+$/.test(v)?api('/releases/'+v).then(r=>[normD(r)]):srch('catno='+encodeURIComponent(v)),{m:{},p:{id:v}});
+function need(){const q=$('#q').value.trim();if(!q)$('#q').classList.add('warn');return q}
+function addBtn(){const q=need();if(q)go(()=>AP()?aps('term='+encodeURIComponent(q)):S()?mbs('release:('+mq(q)+') OR artist:('+mq(q)+')'):srch('q='+encodeURIComponent(q)))}
+function cdBtn(){const q=need();if(q)byId(q)}
+function barBtn(){const q=need();if(q)byBar(q.replace(/\s+/g,''))}
+function handBtn(){const q=$('#q').value.trim();edit(null,!q?{}:/^\d{8,14}$/.test(q)?{barcode:q}:{title:q})}
+$('#q').addEventListener('focus',()=>$('#q').classList.remove('warn'));
+$('#pho').onchange=e=>onPhoto(e);
+const okDet=()=>'BarcodeDetector' in window;
+const detect=async s=>{try{const r=await new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']}).detect(s);return r[0]?r[0].rawValue:null}catch(e){return null}};
+function stopCam(){clearInterval(tm);st&&st.getTracks().forEach(t=>t.stop());st=null}
+const gotBar=c=>{$('#q').value=c;byBar(c)};
+async function cam(){
+ const hint='，請改用「拍照」按鈕';
+ if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return toast('此環境無法即時開啟相機'+hint,4000);
+ if(!okDet())return toast('此瀏覽器不支援即時條碼辨識'+hint+'，或手動輸入條碼',4000);
+ dlg('<h3>&nbsp;</h3><video id="vd" playsinline muted></video>');
+ try{st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}})}
+ catch(e){stopCam();$('#dlg').open&&$('#dlg').close();return toast(e.name=='NotAllowedError'?'相機被拒絕或被預覽視窗限制，請在網址列允許相機'+hint:e.name=='NotFoundError'?'找不到相機'+hint:'無法啟用相機（'+e.name+'）'+hint,4500)}
+ if(!$('#dlg').open){stopCam();return}
+ const v=$('#vd');v.srcObject=st;try{await v.play()}catch(_){}
+ tm=setInterval(async()=>{const c=await detect(v);if(c){stopCam();$('#dlg').close();gotBar(c)}},500);
+}
+async function onPhoto(e){const f=e.target.files[0];e.target.value='';if(!f)return;if(!okDet())return toast('此瀏覽器不支援條碼辨識，請手動輸入條碼',3500);
+ let c=null;try{c=await detect(await createImageBitmap(f))}catch(_){}c?gotBar(c):toast('無法辨識條碼，請拍清楚條碼或手動輸入',3500)}
+/* ---------- 搜尋結果與加入 ---------- */
+function showRes(l){
+ $('#dlg').open&&$('#dlg').close();R={l,s:new Set()};$('#res').hidden=false;$('#res').scrollTop=0;
+ $('#rl').innerHTML=l.map(x=>`<label class="rr"><input type="checkbox" value="${esc(rk(x))}"><img referrerpolicy="no-referrer" src="${esc(x.cover)||PH}" onerror="this.onerror=null;this.src=PH"><span><b>${esc(x.title)}</b><br>${esc(x.artist)}<br><small>${esc([x.year,x.label,x.format,x.country].filter(Boolean).join(' · '))}</small><br><small>${x.discogsId?'ID '+esc(x.discogsId):x.appleId?'Apple Music':'MusicBrainz'}${x.barcode?' · '+esc(x.barcode):''}</small></span></label>`).join('');
+ $('#ra').checked=false;fab();
+}
+const fab=()=>{$('#fab').hidden=!R||!R.s.size||$('#res').hidden;$('#fn').textContent=R?R.s.size:0};
+$('#rl').onchange=e=>{const c=e.target;if(c.type!='checkbox')return;c.checked?R.s.add(c.value):R.s.delete(c.value);$('#ra').checked=R.s.size==R.l.length;fab()};
+$('#ra').onchange=e=>{$('#rl').querySelectorAll('input').forEach(c=>{c.checked=e.target.checked;e.target.checked?R.s.add(c.value):R.s.delete(c.value)});fab()};
+$('#rx').onclick=()=>{$('#res').hidden=true;R=null;fab();$('#q').value='';render()};
+async function addOne(p){
+ if(items.some(i=>dkey(i)==dkey(p))&&await ask(`「${esc(p.title)}」已在收藏中，仍要加入？`,['仍然加入'])!=0)return;
+ toast('儲存中…',6e4);
+ const r=await buildItem(p),old=items;items=[...items,r.item];
+ if(!save()){items=old;return}
+ $('#dlg').open&&$('#dlg').close();$('#q').value='';render();scrollTo(0,0);toast('已加入：'+r.item.title,3000)}
+async function buildItem(p){let d=p,fail=0;
+ try{if(!p.det){d=p.mbid?normM(await mb('/release/'+p.mbid+MBINC)):p.appleId?normA(await ijson(AQ+'/lookup?country=tw&entity=song&id='+p.appleId)):normD(await api('/releases/'+p.discogsId));if(p.mbid)await sleep(1100)}}catch(e){fail=1;d=p}
+ d=await enrich(d);const{det,aids,_nm,_st,...x}=d;
+ const it={...BL,...x,region:x.genre=='流行'?ar(d):'',id:uid(),added:today(),orig:{...x}};it.artist=dn(it.artist);it.aka=cleanAka(it.artist,it.aka,it.region);return{fail,item:it}}
+$('#fab').onclick=async()=>{
+ const picks=R.l.filter(x=>R.s.has(rk(x))),dup=picks.filter(p=>items.some(i=>dkey(i)==dkey(p)));let todo=picks;
+ if(dup.length){const c=await ask(`有 ${dup.length} 筆已在收藏中。`,['略過重複','仍然加入']);if(c<0)return;if(c==0)todo=picks.filter(p=>!dup.includes(p))}
+ if(!todo.length)return toast('沒有新增項目');
+ toast('儲存中…',6e4);const out=[];let fail=0;
+ for(const p of todo){const r=await buildItem(p);fail+=r.fail;out.push(r.item)}
+ const old=items;items=[...items,...out];
+ if(!save()){items=old;return}
+ $('#res').hidden=true;R=null;fab();$('#q').value='';render();scrollTo(0,0);toast(`已加入 ${out.length} 筆`+(fail?`（${fail} 筆僅存搜尋摘要）`:''),3500);
+};
+/* ---------- 批次掃描 ---------- */
+let bst,btm,dd=0,W=0;const Q=[],B={on:0,n:0,seen:new Set(),pick:null};
+$('#sx').innerHTML=svg('close');$('#sx').onclick=endBatch;
+const stat=()=>{$('#ss').textContent='已加入 '+B.n+' 張'+(Q.length+W?' · 處理中 '+(Q.length+W):'')};
+const bl=m=>{const d=document.createElement('div');d.textContent=m;$('#sl').prepend(d);stat()};
+async function batch(){
+ if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return toast('此環境無法即時開啟相機',4000);
+ if(!okDet())return toast('此瀏覽器不支援條碼辨識，無法批次掃描',4000);
+ $('#dlg').open&&$('#dlg').close();
+ try{bst=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}})}catch(e){return toast(e.name=='NotAllowedError'?'相機被拒絕或被預覽視窗限制，請在網址列允許相機':'無法啟用相機（'+e.name+'）',4500)}
+ Object.assign(B,{on:1,n:0});B.seen.clear();Q.length=0;$('#sl').innerHTML='';$('#sp').hidden=true;
+ const v=$('#sv');v.srcObject=bst;$('#sc').hidden=false;try{await v.play()}catch(_){}stat();
+ btm=setInterval(async()=>{if(dd||!B.on)return;dd=1;const c=await detect(v);dd=0;if(c&&!B.seen.has(c)){B.seen.add(c);Q.push(c);navigator.vibrate&&navigator.vibrate(60);bl('掃描 '+c);work()}},500);
+}
+async function work(){if(W)return;while(Q.length&&B.on){W=1;stat();await proc(Q.shift());W=0}stat()}
+async function proc(c){
+ try{const l=await(AP()?apl('upc='+bv(c).join(',')):S()?mbs('barcode:('+bv(c).map(x=>'"'+x+'"').join(' OR ')+')'):srch('barcode='+encodeURIComponent(c)));
+  if(!B.on)return;
+  if(!l.length)return bl('✕ '+c+' 查無結果');
+  const k=l.length>1?await choose(l,c):l[0];
+  if(!B.on)return;
+  if(!k)return bl('－ '+c+' 已略過');
+  if(items.some(i=>dkey(i)==dkey(k)))return bl('＝ 已收藏：'+k.artist+' － '+k.title);
+  const r=await buildItem(k);items.push(r.item);
+  if(!save()){items.pop();return bl('✕ 儲存失敗')}
+  B.n++;bl('✓ '+r.item.artist+' － '+r.item.title);if(!B.on)render();
+ }catch(e){B.seen.delete(c);bl('✕ '+c+'：'+e.message)}
+}
+function choose(l,c){return new Promise(res=>{B.pick=res;const p=$('#sp');p.hidden=false;
+ p.innerHTML=`<h4>條碼 ${esc(c)} 有 ${l.length} 筆結果，請選擇</h4>`+l.slice(0,8).map((x,i)=>`<div class="rr" data-i="${i}"><img referrerpolicy="no-referrer" src="${esc(x.cover)||PH}" onerror="this.onerror=null;this.src=PH"><span><b>${esc(x.title)}</b><br>${esc(x.artist)}<br><small>${esc([x.year,x.label,x.format,x.country].filter(Boolean).join(' · '))}</small></span></div>`).join('')+'<div class="row"><button class="bt" data-i="-1">略過</button></div>';
+ p.onclick=e=>{const t=e.target.closest('[data-i]');if(!t)return;p.hidden=true;B.pick=null;res(+t.dataset.i<0?null:l[+t.dataset.i])}})}
+function endBatch(){B.on=0;Q.length=0;clearInterval(btm);bst&&bst.getTracks().forEach(t=>t.stop());bst=null;$('#sv').srcObject=null;if(B.pick){B.pick(null);B.pick=null}$('#sp').hidden=true;$('#sc').hidden=true;$('#q').value='';render();toast('本次批次共加入 '+B.n+' 張',3500)}
+/* ---------- 隨機莫蘭迪配色 ---------- */
+const PAL={};
+function hsl(h,sa,l){h=((h%360)+360)%360;sa/=100;l/=100;const f=n=>{const k=(n+h/30)%12,a=sa*Math.min(l,1-l);return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return'#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join('')}
+const mkPH=(f,c)=>'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="'+f+'"/><circle cx="50" cy="50" r="30" fill="none" stroke="'+c+'" stroke-width="3"/><circle cx="50" cy="50" r="6" fill="'+c+'"/></svg>');
+const NINE=['#8A9BA8', '#A8B5A2', '#C8AFA6', '#C4B7A6', '#C2B07A', '#B46A5A', '#9D8CA6', '#BFBFB3', '#F1CEBA'];
+const hx=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),toHx=a=>'#'+a.map(x=>Math.round(Math.max(0,Math.min(255,x))).toString(16).padStart(2,'0')).join('');
+const mixH=(a,b,t)=>{const p=hx(a),q=hx(b);return toHx(p.map((v,i)=>v*(1-t)+q[i]*t))};
+const lumH=h=>{const c=hx(h).map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+const crH=(a,b)=>{const x=lumH(a),y=lumH(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const inkH=h=>crH(h,'#1c1916')>=crH(h,'#f6f1ea')?'#1c1916':'#f6f1ea';
+const h2hsl=h=>{const[r,g,b]=hx(h).map(v=>v/255),mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let H=0,S=0;if(d){S=d/(1-Math.abs(2*l-1));H=mx==r?((g-b)/d+(g<b?6:0)):mx==g?((b-r)/d+2):((r-g)/d+4);H*=60}return[H,S*100,l*100]};
+const inkM=(B,...r)=>{const sc=['#1c1916','#f6f1ea'].map(x=>[x,crH(x,B),Math.min(crH(x,B),...r.map(b=>crH(x,b)))]),ok=sc.filter(x=>x[1]>=4.5);return(ok.length?ok.sort((p,q)=>q[2]-p[2]):sc.sort((p,q)=>q[1]-p[1]))[0][0]};
+const mm=(t,B,f0,min)=>{for(const f of [f0,f0*.7,f0*.45,f0*.25,0]){const c=mixH(t,B,f);if(crH(c,B)>=min)return c}return t};
+function applyPal(){const sh=[...Array(9).keys()].sort(()=>Math.random()-.5);repaint(sh[0],sh.slice(1))}
+const LT=.42;
+function fitC(h,S,bg,min){
+ const K=crH('#000000',bg);
+ if(lumH(bg)<=LT)return hsl(h,Math.max(S,70),lumH(bg)>.15?90:84);
+ const t=Math.min(min,K*.96),S3=Math.max(S,45);
+ for(let l=62;l>=10;l--){const c=hsl(h,S3,l);if(crH(c,bg)>=t)return c}return hsl(h,S3,10)}
+function monoNine(){const hs=NINE.map(h2hsl).filter(x=>x[1]>=5).map(x=>x[0]);if(hs.length<5)return true;const b=hs[0];return hs.every(h=>Math.min(Math.abs(h-b),360-Math.abs(h-b))<=10)}
+function nineTxt(bg,n){let c=NINE.filter(x=>x.toLowerCase()!=bg.toLowerCase()).map(x=>[x,crH(x,bg)]).sort((a,b)=>b[1]-a[1]);const ok=c.filter(x=>x[1]>=3);c=ok.length?ok:c.slice(0,1);return[...Array(n)].map((_,i)=>c[i%c.length][0])}
+function spreadH(n,ci){const hs=ci.map(i=>h2hsl(NINE[i])[0]),b=hs[0]||0;return[...Array(n)].map((_,j)=>{const t=b+j*360/n;let best=t,bd=26;hs.forEach(h=>{const d=Math.abs(((h-t+540)%360)-180);if(d<bd){bd=d;best=h}});return best})}
+function repaint(bi,pool){
+ const st=document.documentElement.style,v=(k,y)=>{st.setProperty(k,y);PAL[k]=y};
+ const B=NINE[bi];
+ PAL.bg=B;PAL.bi=bi;PAL.pool=pool.map(i=>i+1);st.colorScheme='light';
+ NINE.forEach((c,i)=>v('--c'+(i+1),c));
+ {const p=mixH(B,'#ffffff',.22),p2=mixH(B,'#ffffff',.35),t=inkM(B,p,p2);v('--bg',B);v('--p',p);v('--p2',p2);v('--b',mixH(B,'#000000',.14));v('--t',t);v('--m',mm(t,B,.32,4.5));v('--f',mm(t,B,.5,3.5));v('--ib',mixH(B,t,.5))}
+ {const it=lumH(B)<=LT?'#f6f1ea':'#1c1916',ci=crH(it,B);v('--it',it);v('--im',mm(it,B,.25,Math.min(4.5,ci*.9)));v('--if',mm(it,B,.45,Math.min(3.5,ci*.8)))}
+ pool.forEach((ci,k)=>{const c=NINE[ci],[h,s1]=h2hsl(c);v('--qc'+(k+1),c);v('--qs'+(k+1),c);v('--qk'+(k+1),inkH(c));v('--qd'+(k+1),hsl(h,Math.min(s1,45),19))});
+ v('--a',PAL['--qc3']);v('--a2',PAL['--qd1']);v('--a3',PAL['--qd3']);
+ const gc=NINE[pool[2]];v('--gd',gc);v('--on',inkH(gc));v('--hotbg',NINE[pool[4]]);v('--hotfg',inkH(NINE[pool[4]]));
+ v('--sh','rgba(60,50,40,.22)');v('--hi','rgba(255,255,255,.45)');v('--dv','rgba(60,50,40,.14)');v('--dgc','#8f3f38');
+ v('--xicon','url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23'+PAL['--qk1'].slice(1)+'\' stroke-width=\'2\' stroke-linecap=\'round\'%3E%3Cpath d=\'M6 6l12 12M18 6L6 18\'/%3E%3C/svg%3E")');
+ PAL.phf=mixH(B,'#ffffff',.1);PAL.phs=mixH(B,PAL['--t'],.3);PH=mkPH(PAL.phf,PAL.phs);
+ {const MONO=monoNine(),cand=NINE.map((_,i)=>i).filter(i=>i!=bi),byH=a=>[...a].sort((p,q)=>h2hsl(NINE[p])[0]-h2hsl(NINE[q])[0]),S0=Math.max(42,Math.min(60,NINE.reduce((t,c)=>t+h2hsl(c)[1],0)/NINE.length*1.15));
+  const hi=spreadH(8,byH(cand));if(MONO)nineTxt(PAL['--bg'],8).forEach((c,j)=>v('--i'+(j+1),c));else [0,3,6,1,4,7,2,5].forEach((k,j)=>v('--i'+(j+1),fitC(hi[k],S0,PAL['--bg'],4.5)));
+  pool.forEach((ci,k)=>{const F=PAL['--qs'+(k+1)],cs=byH(cand.filter(i=>i!=ci)),r=k%cs.length,hc=spreadH(3,[...cs.slice(r),...cs.slice(0,r)]);(MONO?nineTxt(F,3):hc.map((h,j)=>fitC(h,S0,F,j<2?4.5:4))).forEach((c,j)=>v('--ct'+(k+1)+'abc'[j],c))})}
+ if(typeof paintCards=='function'&&$('#list'))paintCards();
+}
+const LSP='cdc_pal';
+function loadPal(o){Object.assign(PAL,o);const st=document.documentElement.style;Object.keys(o).forEach(k=>k.startsWith('--')&&st.setProperty(k,o[k]));st.colorScheme='light';PH=mkPH(o.phf,o.phs)}
+function lockPal(){try{localStorage.setItem(LSP,JSON.stringify(PAL))}catch(_){toast('配色儲存失敗')}}
+const palText=()=>'背景 '+PAL.bg+'　按鈕 '+(PAL.pool||[]).map(i=>PAL['--c'+i]||NINE[i-1]).join(' ');
+const crn=new Map();
+function paintCards(){
+ const l=$('#list'),cs=[...l.children].filter(c=>c.classList.contains('cd'));if(!cs.length)return;
+ const ncol=Math.max(1,getComputedStyle(l).gridTemplateColumns.split(' ').length),n=8,col=[];
+ cs.forEach((c,k)=>{const id=c.dataset.id;if(!crn.has(id))crn.set(id,Math.random());const ban=new Set();if(k%ncol)ban.add(col[k-1]);if(k>=ncol)ban.add(col[k-ncol]);const av=[...Array(n)].map((_,i)=>i+1).filter(i=>!ban.has(i));col[k]=av[Math.floor(crn.get(id)*av.length)];c.dataset.c=col[k]})}
+let rzt;addEventListener('resize',()=>{clearTimeout(rzt);rzt=setTimeout(paintCards,150)});
+try{const n9=JSON.parse(localStorage.getItem('cdc_nine'));if(Array.isArray(n9)&&n9.length==9&&n9.every(h=>/^#[0-9a-f]{6}$/i.test(h)))NINE.splice(0,9,...n9)}catch(_){}
+let sv=null;try{sv=JSON.parse(localStorage.getItem(LSP))}catch(_){}
+if(cfg.rand===0&&sv&&sv['--bg'])loadPal(sv);else applyPal();
+srcChip();
+render();
+(function(){
+
+const RAW="F2E8DF奶油白,E8DDD3亞麻米,EADBC8燕麥,F1CEBA蜜桃,E6C9C1玫瑰灰粉,DDBFB7乾燥玫瑰,D8B4A6陶土粉,C8AFA6暖杏灰,C9A9A6豆沙粉,D4B8B8藕粉,CDB4C0灰紫粉,BFA8B8薰衣草灰,B7A6BA煙燻紫,9D8CA6灰紫,A59BB0藤紫,8E7F94葡萄灰,C4B7A6沙礫,C2B07A芥末灰,D2C29D麥穗,CBBE9F卡其米,B9AE8F橄欖沙,A9A07C苔綠黃,9A9A7B橄欖灰,8C9172抹茶灰,A8B5A2鼠尾草,B5C0AE薄荷灰,C3CCBB淡苔,9FB0A0灰綠,8FA394松針灰,7F9484森林霧,6F8577深灰綠,A3B8B0海霧綠,93ABA7青瓷,83A0A0灰青,B3C5C6霧藍青,C3D0D0冰川灰,A8B9C6霧藍,8A9BA8灰藍,7C90A0石板藍,6E8294牛仔灰藍,8E9BB0暮藍,7D8AA3鳶尾灰,6B7690靛灰,5F6B7F深靛灰,B8C2D0淡霧藍,C5CCD6晨霧,BFBFB3石灰,D0CEC4亞麻灰,C9C5BB淺礫灰,B5B2A9鵝卵石,A5A29A煙灰,96938C灰岩,87847E灰褐,78756F炭灰褐,6A6761深岩,5C5A55墨灰,4E4C48焦炭灰,B46A5A赭紅,A8695C磚紅灰,B87B6B陶紅,C28E7E赤陶,C99C8C肉桂粉,A0705F可可紅,8F6558栗棕,7F5A4E咖啡棕,6F5047深可可,A98B76駝色,B79B85奶茶,C3A994拿鐵,9C8068焦糖灰,8B7260摩卡,7A6354胡桃,D1B79F杏仁,DCC4AE淺杏,C9A27E琥珀灰,B8895E蜂蜜褐,D9B48F蜜橘灰,D6A38C柿子粉,CF9A8B珊瑚灰,C98B85乾燥紅粉,B97A7A莓果灰,A66B72梅子粉,94606A酒紅灰,835560葡萄酒,B58B9A乾燥莓紫,A47D90紫藕,937285暗莓,8A6F7E灰梅,D8C3C8櫻粉灰,E3CFD0淡櫻,E5D3C5裸膚,D8C7B6米杏,E0D5C2象牙沙,DAD3C0米白灰,D2D6C6青灰米,C8D1C3薄荷米,BCCBC5霧薄荷,ADBFC9天霧藍,9FB3BF湖水灰,C4B5CC鳶尾粉";
+const rgb=h=>[0,2,4].map(i=>parseInt(h.slice(1+i,3+i),16));
+const Y=h=>{const[r,g,b]=rgb(h);return .2126*r+.7152*g+.0722*b};
+const hx=a=>"#"+a.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,"0")).join("").toUpperCase();
+const P=RAW.split(",").map(s=>({hex:"#"+s.slice(0,6),name:s.slice(6)})).sort((a,b)=>Y(b.hex)-Y(a.hex));
+P.forEach((c,i)=>c.id="M"+String(i+1).padStart(3,"0"));
+const $=id=>document.getElementById("ct_"+id);
+const fg=h=>Y(h)>150?"#2b2927":"#fff";
+let act=1,cur=[];
+const AT=window.toast;function toast(t){AT(t,1400)}
+function copy(t){
+  const ok=()=>toast("已複製 "+(t.length>12?"":t));
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,()=>fb())}else fb();
+  function fb(){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){toast("複製失敗")}a.remove()}
+}
+function pick(c){$("i"+act).value=c.hex;copy(c.hex)}
+let sel=null;
+function big(d){if(sel)sel.classList.remove("big");sel=d;d.style.setProperty("--s",(d.offsetWidth+3)/d.offsetWidth);d.classList.add("big")}
+const g=$("grid"),cs=$("cards");
+P.forEach(c=>{
+  const d=document.createElement("div");d.style.background=c.hex;d.title=c.id+" "+c.name;d.style.color=fg(c.hex);d.onclick=()=>{pick(c);big(d);clearTimeout(d._t);d.classList.add("pk");d._t=setTimeout(()=>d.classList.remove("pk"),2000)};g.appendChild(d);
+  const k=document.createElement("div");k.className="card";k.style.background=c.hex;k.style.color=fg(c.hex);k.textContent=c.id+" "+c.name+" "+c.hex;k.onclick=()=>pick(c);cs.appendChild(k);
+});
+["i1","i2"].forEach((id,n)=>{$(id).onfocus=$(id).onclick=()=>{act=n+1;$("i1").classList.toggle("on",act==1);$("i2").classList.toggle("on",act==2)}});
+function val(id){let v=$(id).value.trim().replace(/^#/,"");if(/^[0-9a-f]{3}$/i.test(v))v=v.split("").map(x=>x+x).join("");if(!/^[0-9a-f]{6}$/i.test(v))return null;return"#"+v.toUpperCase()}
+function nameOf(h){const f=P.find(c=>c.hex==h);return f?f.id+" "+f.name:"輸入色"}
+function show(title,list){
+  cur=list;$("ptt").textContent=title;const pl=$("pl");pl.innerHTML="";
+  list.forEach(c=>{const d=document.createElement("div");d.className="card";d.style.background=c.hex;d.style.color=fg(c.hex);
+    d.innerHTML="<span></span><span></span>";d.onclick=()=>one(c);d.children[0].textContent=c.name.replace(/^M\d+ /,"");d.children[1].remove();pl.appendChild(d)});
+  $("mask").style.display="flex";
+}
+let mode=0;const MN=["跨色系","同色系","近色相"];
+["m0","m1","m2"].forEach((id,n)=>$(id).onclick=()=>{mode=n;["m0","m1","m2"].forEach((j,k)=>$(j).classList.toggle("on",k==n))});
+function hcl(h){const[r,g,b]=rgb(h),mx=Math.max(r,g,b),mn=Math.min(r,g,b),c=mx-mn,L=(mx+mn)/510;let H=0;if(c){H=mx==r?((g-b)/c)%6:mx==g?(b-r)/c+2:(r-g)/c+4;H*=60;if(H<0)H+=360}return{H,c,L}}
+function fam(h){const{H,c,L}=hcl(h);if(c<14)return"灰";if(H>=255&&H<330)return"紫";if(H>=330||H<20)return L>.65?"粉紅":"褐";if(H<42)return L>.78?"粉紅":"褐";if(H<75)return"黃";if(H<165)return"綠";return"藍"}
+function pickNine(h){
+  const y=Y(h),a=hcl(h),lum=c=>Math.abs(Y(c.hex)-y);let sc;
+  if(mode==0)sc=lum;
+  else if(mode==1){const f=fam(h);sc=c=>lum(c)+(fam(c.hex)==f?0:1000)}
+  else sc=c=>{const b=hcl(c.hex);const d=a.c<14?0:b.c<14?90:Math.min(Math.abs(a.H-b.H),360-Math.abs(a.H-b.H));return .6*lum(c)/255+.4*d/40+(d>40?10:0)};
+  return P.filter(c=>c.hex!=h).sort((p,q)=>sc(p)-sc(q)).slice(0,8).map(c=>({hex:c.hex,name:c.id+" "+c.name}));
+}
+$("b9").onclick=()=>{
+  const h=val("i1");if(!h)return toast("請在第一輸入框輸入色碼");
+  const o=pickNine(h);
+  o.push({hex:h,name:nameOf(h)});o.sort((a,b)=>Y(b.hex)-Y(a.hex));show("九色・"+MN[mode]+(mode==1?"（"+fam(h)+"）":""),o);
+};
+$("bg").onclick=()=>{
+  const h=val("i1");if(!h)return toast("請在第一輸入框輸入色碼");
+  const[r,g,b]=rgb(h),mx=Math.max(r,g,b)/255,mn=Math.min(r,g,b)/255,L=(mx+mn)/2,d=mx-mn;
+  let H=0,S=d==0?0:d/(1-Math.abs(2*L-1));
+  if(d){const R=r/255,G=g/255,B=b/255;H=mx==R?((G-B)/d)%6:mx==G?(B-R)/d+2:(R-G)/d+4;H*=60;if(H<0)H+=360}
+  const f=(n,s,l)=>{const k=(n+H/30)%12,a=s*Math.min(l,1-l);return 255*(l-a*Math.max(-1,Math.min(k-3,9-k,1)))};
+  const o=[];
+  for(let k=1;k<=9;k++){
+    let l=k<5?L+(.94-L)*(5-k)/5:k>5?L-(L-.08)*(k-5)/5:L;
+    o.push({hex:k==5?h:hx([f(0,S,l),f(8,S,l),f(4,S,l)]),name:"第"+k+"階"+(k==5?"（輸入）":"")});
+  }
+  show("同色灰階九階",o);
+};
+$("bj").onclick=()=>{
+  const a=val("i1"),b=val("i2");if(!a||!b)return toast("請輸入兩個色碼");
+  const A=rgb(a),B=rgb(b),o=[];
+  for(let k=0;k<9;k++){const t=k/8;o.push({hex:hx(A.map((v,i)=>v+(B[i]-v)*t)),name:"第"+(k+1)+"階"})}
+  show("雙色九階漸層",o);
+};
+$("cp").onclick=()=>{
+  if(cur.length!==9)return toast("需要九個顏色");
+  NINE.splice(0,9,...cur.map(c=>c.hex.toUpperCase()));
+  try{localStorage.setItem("cdc_nine",JSON.stringify(NINE))}catch(_){}
+  $("mask").style.display="none";window.closeCT();
+  applyPal();if(cfg.rand===0)lockPal();
+  render();AT("已套用新的九色",2500);
+};
+const close=()=>$("mask").style.display="none";
+$("cl").onclick=$("x").onclick=close;
+function one(c){
+  const w=$("pl").clientWidth-24,h=(w-12)/3,m=/^(M\d+) (.+)$/.exec(c.name),e=$("one");
+  e.style.cssText="width:"+w+"px;height:"+h+"px;background:"+c.hex+";color:"+fg(c.hex);
+  e.textContent=(m?m[1]:"—")+" "+(m?m[2]:c.name)+" "+c.hex;
+  $("mask2").style.display="flex";copy(c.hex);
+}
+$("mask2").onclick=()=>$("mask2").style.display="none";
+$("tg").onclick=()=>{const on=$("pl").classList.toggle("g9");$("tg").textContent=on?"卡片式":"九宮格"};
+$("mask").onclick=e=>{if(e.target.id=="mask")close()};
+
+window.openCT=()=>{const e=document.getElementById('ct');e.hidden=false;e.scrollTop=0};
+window.closeCT=()=>{document.getElementById('ct').hidden=true};
+document.getElementById('ct_xx').onclick=window.closeCT;
+})();
+</script></body></html>
